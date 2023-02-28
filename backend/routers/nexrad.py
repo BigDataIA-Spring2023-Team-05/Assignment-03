@@ -1,8 +1,8 @@
 from fastapi import APIRouter, status, HTTPException, Response, Depends
-from .. schemas import User, Nexrad
-from .. oauth2 import get_current_user
+from models.schemas import User, Nexrad
+from middleware.oauth2 import get_current_user
 from awscloud.s3 import nexrad_main as aws
-from .. data.mapdata import MapData
+from data.mapdata import MapData
 import re
 
 mapData = MapData()

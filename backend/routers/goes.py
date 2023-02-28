@@ -1,9 +1,6 @@
 from fastapi import APIRouter, status, HTTPException, Response, Depends
-from pydantic import BaseModel
-from .. data import user
-import os
-from .. schemas import User, GOES
-from .. oauth2 import get_current_user
+from schemas.schemas import User, GOES
+from middleware.oauth2 import get_current_user
 from awscloud.s3 import main as aws
 import re
 
