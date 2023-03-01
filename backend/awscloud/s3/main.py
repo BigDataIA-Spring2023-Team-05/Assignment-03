@@ -5,7 +5,6 @@ import boto3.s3
 import botocore
 import re
 from dotenv import load_dotenv
-# from data.sql_aws_metadata import Metadata
 from awscloud.cloudwatch.logger import write_goes_log
 from utils.logger import Log
 from utils import status_checker as status_check
@@ -84,7 +83,6 @@ def get_aws_link_by_filename(filename):
     write_goes_log(f"User requested  file: {filename}")
 
     y = filename.split('_')
-    # print(y)
     filename_pattern = r'(.*)-(.*)'
     regex_pattern = re.compile(filename_pattern)
     res_fn = regex_pattern.findall(y[1])
@@ -97,10 +95,10 @@ def get_aws_link_by_filename(filename):
     time = y[3]
     year = time[1:5]
     day = time[5:8]
-    date = time[8:10]
+    hour = time[8:10]
 
     #combining all pieces of url
-    output = "https://noaa-goes18.s3.amazonaws.com/" + res + '/' + year + '/' + day + '/' + date + '/' + filename
+    output = "https://noaa-goes18.s3.amazonaws.com/" + res + '/' + year + '/' + day + '/' + hour + '/' + filename
 
     if(status_check.getStatuscode(output) != 200):
         Log().i('File do not exists')
@@ -113,3 +111,26 @@ def get_aws_link_by_filename(filename):
     Log().i(f'GOES Bucket link: {output}')
 
     return output
+
+
+def get_file_meta_with_filename(filename:str):
+    y = filename.split('_')
+    filename_pattern = r'(.*)-(.*)'
+    regex_pattern = re.compile(filename_pattern)
+    res_fn = regex_pattern.findall(y[1])
+    res = str(res_fn[0][0])
+    end = res[-1]
+    if end.isnumeric():
+        res = res[:-1]
+            # print(res)
+            # get timestamp
+    time = y[3]
+    year = time[1:5]
+    day = time[5:8]
+    hour = time[8:10]
+
+    return res, year, day, hour, filename
+
+def get_our_aws_link_by_filename(filename:str):
+    station, year, day, hour, filename_generated = get_file_meta_with_filename(filename= filename)
+    return get_geos_aws_link(station= station, year= year, day= day, hour= hour, filename= filename_generated)

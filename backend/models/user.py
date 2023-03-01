@@ -1,6 +1,8 @@
-from sqlalchemy import Integer, Table, Column
-from sqlalchemy.sql.sqltypes import Integer, String 
+from sqlalchemy import Integer, Table, Column, ForeignKey
+from sqlalchemy.sql.sqltypes import Integer, String, DateTime
 from config.db import Base
+from sqlalchemy.orm import relationship
+import datetime
 
 class UserModel(Base):
     __tablename__ = 'users'
@@ -9,15 +11,10 @@ class UserModel(Base):
     username = Column(String(255), unique=True)
     email = Column(String(255), unique=True)
     password = Column(String(255))
-    api_key = Column(String(255), unique=False, nullable=True)
+    apiKey = Column(String(255), unique=False, nullable=True)
+    planId = Column(Integer, ForeignKey('servicePlans.id'), unique=False, nullable= False, default= 1)
+    created_date = Column(DateTime, default= datetime.datetime.utcnow)
 
-    # blogs = relationship('Blog', back_populates="creator")
 
-# UserModel = Table(
-#     'users', meta,
-#     Column('id', Integer, primary_key=True, autoincrement=True),
-#     Column('username', String(255), unique=True), 
-#     Column('email', String(255), unique=True), 
-#     Column('password', String(255)),
-#     Column('api_key', String(255), unique=True)
-# )
+    user = relationship("UserRequestsModel", back_populates="requests")
+    # user_plans = relationship("ServicePlanModel", back_populates="plans")

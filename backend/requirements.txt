@@ -13,3 +13,5 @@ uvicorn
 requests
 SQLAlchemy
 mysql-connector-python
+pydantic[email]
+redis
