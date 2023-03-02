@@ -26,7 +26,8 @@ class TimedRoute(APIRoute):
 
             # print(response.status_code)
 
-            requestLog.create(request_endpoint=request.url.path, request_status= response.status_code, db= db, token = request.headers['Authorization'])
+            if request.headers.get('Authorization') is not None:
+                requestLog.create(request_endpoint=request.url.path, request_status= response.status_code, db= db, token = request.headers['Authorization'])
 
             return response
 

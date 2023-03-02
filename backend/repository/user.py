@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from models.index import UserModel
-from schemas.index import User, LoginResponse
+from models.index import UserModel, ServicePlanModel
+from schemas.index import User, LoginResponse, UserPlan, Plan
 from utils import hashing, JWT_token
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException, status
@@ -34,3 +34,6 @@ def find_user(username: str, password: str, db: Session):
     
     return LoginResponse(username= str(user.username), access_token= access_token, token_type= 'bearer')
 
+def is_user_specific_api_rate_limit_under_limit(user_id: int, db: Session):
+    user: UserModel = db.query(UserModel).filter(UserModel.id == user_id).join(ServicePlanModel).first()
+    return user

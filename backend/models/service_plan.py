@@ -10,3 +10,5 @@ class ServicePlanModel(Base):
     planName = Column(String(255), unique=True)
     requestLimit = Column(Integer, default= 10)
     timeFrame = Column(Integer, default= 60) # Specified time frame as 60 minutes (i.e. 1 hr)
+
+    user = relationship("UserModel", back_populates="plan")

@@ -6,7 +6,10 @@ import re
 from config import db
 from middleware.requests_logs import TimedRoute
 from fastapi.responses import JSONResponse
-from schemas.index import GOESAWSFileResponse
+from schemas.index import GOESAWSFileResponse, UserPlan
+from utils.redis import islimiter
+from repository.user import get_user_specific_api_rate_limit
+from sqlalchemy.orm import Session
 
 router = APIRouter(
     prefix='/goes',
@@ -15,6 +18,19 @@ router = APIRouter(
 )
 get_db = db.get_db
 
+# @router.get("/test")
+# def test(request: Request):
+#     clientIp = request.client.host
+#     res = limiter(clientIp, 5)
+#     if res["call"]:
+#         return {
+#             "ttl": res["ttl"]
+#         }
+#     else:
+#        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE,      detail={
+#        "message": "call limit reached",
+#        "ttl": res["ttl"]
+#     })
 
 @router.get('/files')
 def get_all_goes_file(station: str, year: str, day: str, hour: str, response: Response, get_current_user: User = Depends(get_current_user)):
@@ -52,28 +68,38 @@ def generate_aws_link(request: GOES, get_current_user: TokenData = Depends(get_c
                 status.HTTP_400_BAD_REQUEST: {'success': False, "message": "Invalid file name"},
             }
         )
-def generate_aws_link_by_filename(filename, request: Request, get_current_user: TokenData = Depends(get_current_user)):
-    
-    regex = re.compile(r'(OR)_(ABI)-(L\d+b)-(Rad[A-Z]?)-([A-Z]\dC\d{2})_(G\d+)_(s\d{14})_(e\d{14})_(c\d{14}).nc')
-    match = regex.match(filename)
-    if not match:
-        return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            content={
-                'success': False, 
-                "message": "Invalid file name"
-            }
-        )
-    
-    result = aws.get_aws_link_by_filename(filename=filename)
+def generate_aws_link_by_filename(filename, request: Request, get_current_user: TokenData = Depends(get_current_user), db: Session = Depends(get_db)):
+    user: UserPlan = get_user_specific_api_rate_limit(get_current_user.id, db= db)
+    if islimiter(user.id, user.plan.requestLimit) is True:
 
-    if(result == None):
+        regex = re.compile(r'(OR)_(ABI)-(L\d+b)-(Rad[A-Z]?)-([A-Z]\dC\d{2})_(G\d+)_(s\d{14})_(e\d{14})_(c\d{14}).nc')
+        match = regex.match(filename)
+        if not match:
+            return JSONResponse(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                content={
+                    'success': False, 
+                    "message": "Invalid file name"
+                }
+            )
+        
+        result = aws.get_aws_link_by_filename(filename=filename)
+
+        if(result == None):
+            return JSONResponse(
+                status_code=status.HTTP_404_NOT_FOUND,
+                content={
+                    'success': False, 
+                    "message": "Requested file does not exists in GOES S3 Bucket!"
+                }
+            )
+        
+        return GOESAWSFileResponse(success = True, message= 'original bucket link', bucket_link= result)
+    else:
         return JSONResponse(
-            status_code=status.HTTP_404_NOT_FOUND,
-            content={
-                'success': False, 
-                "message": "Requested file does not exists in GOES S3 Bucket!"
-            }
-        )
-    
-    return GOESAWSFileResponse(success = True, message= 'original bucket link', bucket_link= result)
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                content={
+                    'success': False, 
+                    "message": "API limit excceded!"
+                }
+            )

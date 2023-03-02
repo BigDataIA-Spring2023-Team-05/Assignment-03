@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, EmailStr, validator
 from typing import List, Optional
+from . service_plan import Plan
 
 class User(BaseModel):
     username:str = Field(
@@ -21,6 +22,14 @@ class UserResponse(BaseModel):
     username:str
     email:EmailStr
 
+    class Config():
+        orm_mode = True
+
+class UserPlan(BaseModel):
+    id: int
+    username:str
+    email:EmailStr
+    plan: Plan
     class Config():
         orm_mode = True
 

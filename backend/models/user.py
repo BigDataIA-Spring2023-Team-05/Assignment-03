@@ -17,4 +17,6 @@ class UserModel(Base):
 
 
     user = relationship("UserRequestsModel", back_populates="requests")
+    plan = relationship("ServicePlanModel", back_populates="user")
+
     # user_plans = relationship("ServicePlanModel", back_populates="plans")
