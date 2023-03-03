@@ -1,0 +1,33 @@
+[2023-03-03T20:51:04.893+0000] {taskinstance.py:1083} INFO - Dependencies all met for <TaskInstance: sandbox.get_data_goes_from_aws manual__2023-03-03T20:51:01.148535+00:00 [queued]>
+[2023-03-03T20:51:04.900+0000] {taskinstance.py:1083} INFO - Dependencies all met for <TaskInstance: sandbox.get_data_goes_from_aws manual__2023-03-03T20:51:01.148535+00:00 [queued]>
+[2023-03-03T20:51:04.900+0000] {taskinstance.py:1279} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-03T20:51:04.901+0000] {taskinstance.py:1280} INFO - Starting attempt 1 of 1
+[2023-03-03T20:51:04.901+0000] {taskinstance.py:1281} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-03T20:51:04.907+0000] {taskinstance.py:1300} INFO - Executing <Task(PythonOperator): get_data_goes_from_aws> on 2023-03-03 20:51:01.148535+00:00
+[2023-03-03T20:51:04.915+0000] {standard_task_runner.py:55} INFO - Started process 8172 to run task
+[2023-03-03T20:51:04.919+0000] {standard_task_runner.py:82} INFO - Running: ['***', 'tasks', 'run', 'sandbox', 'get_data_goes_from_aws', 'manual__2023-03-03T20:51:01.148535+00:00', '--job-id', '12', '--raw', '--subdir', 'DAGS_FOLDER/noaa.py', '--cfg-path', '/tmp/tmps8i5u2ad']
+[2023-03-03T20:51:04.920+0000] {standard_task_runner.py:83} INFO - Job 12: Subtask get_data_goes_from_aws
+[2023-03-03T20:51:04.993+0000] {task_command.py:388} INFO - Running <TaskInstance: sandbox.get_data_goes_from_aws manual__2023-03-03T20:51:01.148535+00:00 [running]> on host a1445a4c94cf
+[2023-03-03T20:51:05.514+0000] {taskinstance.py:1507} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=***
+AIRFLOW_CTX_DAG_ID=sandbox
+AIRFLOW_CTX_TASK_ID=get_data_goes_from_aws
+AIRFLOW_CTX_EXECUTION_DATE=2023-03-03T20:51:01.148535+00:00
+AIRFLOW_CTX_TRY_NUMBER=1
+AIRFLOW_CTX_DAG_RUN_ID=manual__2023-03-03T20:51:01.148535+00:00
+[2023-03-03T20:51:05.567+0000] {logging_mixin.py:137} INFO - ********************** get_all_geos_file_name_by_filter_new****************
+[2023-03-03T20:51:05.568+0000] {taskinstance.py:1768} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.9/site-packages/airflow/operators/python.py", line 175, in execute
+    return_value = self.execute_callable()
+  File "/home/airflow/.local/lib/python3.9/site-packages/airflow/operators/python.py", line 192, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/opt/airflow/dags/main.py", line 64, in get_all_geos_file_name_by_filter_new
+    for object_summary in src_bucket_goes.objects.filter(Prefix=f'{station}/{year}/'):
+NameError: name 'station' is not defined
+[2023-03-03T20:51:05.589+0000] {taskinstance.py:1318} INFO - Marking task as FAILED. dag_id=sandbox, task_id=get_data_goes_from_aws, execution_date=20230303T205101, start_date=20230303T205104, end_date=20230303T205105
+[2023-03-03T20:51:05.598+0000] {standard_task_runner.py:100} ERROR - Failed to execute job 12 for task get_data_goes_from_aws (name 'station' is not defined; 8172)
+[2023-03-03T20:51:05.664+0000] {local_task_job.py:208} INFO - Task exited with return code 1
+[2023-03-03T20:51:05.686+0000] {taskinstance.py:2578} INFO - 0 downstream tasks scheduled from follow-on schedule check

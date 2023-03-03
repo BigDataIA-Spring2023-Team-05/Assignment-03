@@ -1,0 +1,22 @@
+[2023-03-03T21:19:25.941+0000] {taskinstance.py:1083} INFO - Dependencies all met for <TaskInstance: sandbox.get_data_goes_from_aws manual__2023-03-03T21:19:20.869550+00:00 [queued]>
+[2023-03-03T21:19:25.950+0000] {taskinstance.py:1083} INFO - Dependencies all met for <TaskInstance: sandbox.get_data_goes_from_aws manual__2023-03-03T21:19:20.869550+00:00 [queued]>
+[2023-03-03T21:19:25.951+0000] {taskinstance.py:1279} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-03T21:19:25.951+0000] {taskinstance.py:1280} INFO - Starting attempt 1 of 1
+[2023-03-03T21:19:25.952+0000] {taskinstance.py:1281} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-03T21:19:25.963+0000] {taskinstance.py:1300} INFO - Executing <Task(PythonOperator): get_data_goes_from_aws> on 2023-03-03 21:19:20.869550+00:00
+[2023-03-03T21:19:25.974+0000] {standard_task_runner.py:55} INFO - Started process 9649 to run task
+[2023-03-03T21:19:25.989+0000] {standard_task_runner.py:82} INFO - Running: ['***', 'tasks', 'run', 'sandbox', 'get_data_goes_from_aws', 'manual__2023-03-03T21:19:20.869550+00:00', '--job-id', '17', '--raw', '--subdir', 'DAGS_FOLDER/noaa.py', '--cfg-path', '/tmp/tmp_az_dv10']
+[2023-03-03T21:19:26.000+0000] {standard_task_runner.py:83} INFO - Job 17: Subtask get_data_goes_from_aws
+[2023-03-03T21:19:26.182+0000] {task_command.py:388} INFO - Running <TaskInstance: sandbox.get_data_goes_from_aws manual__2023-03-03T21:19:20.869550+00:00 [running]> on host a1445a4c94cf
+[2023-03-03T21:19:27.615+0000] {taskinstance.py:1507} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=***
+AIRFLOW_CTX_DAG_ID=sandbox
+AIRFLOW_CTX_TASK_ID=get_data_goes_from_aws
+AIRFLOW_CTX_EXECUTION_DATE=2023-03-03T21:19:20.869550+00:00
+AIRFLOW_CTX_TRY_NUMBER=1
+AIRFLOW_CTX_DAG_RUN_ID=manual__2023-03-03T21:19:20.869550+00:00
+[2023-03-03T21:19:28.501+0000] {logging_mixin.py:137} INFO - ********************** get_all_geos_file_name_by_filter_new****************
+[2023-03-03T21:19:32.136+0000] {local_task_job.py:208} INFO - Task exited with return code Negsignal.SIGKILL
+[2023-03-03T21:19:32.195+0000] {taskinstance.py:2578} INFO - 0 downstream tasks scheduled from follow-on schedule check

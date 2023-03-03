@@ -1,0 +1,73 @@
+[2023-03-03T21:56:04.843+0000] {taskinstance.py:1083} INFO - Dependencies all met for <TaskInstance: sandbox.get_data_nexrad_from_aws manual__2023-03-03T21:55:52.100497+00:00 [queued]>
+[2023-03-03T21:56:04.851+0000] {taskinstance.py:1083} INFO - Dependencies all met for <TaskInstance: sandbox.get_data_nexrad_from_aws manual__2023-03-03T21:55:52.100497+00:00 [queued]>
+[2023-03-03T21:56:04.851+0000] {taskinstance.py:1279} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-03T21:56:04.851+0000] {taskinstance.py:1280} INFO - Starting attempt 1 of 1
+[2023-03-03T21:56:04.852+0000] {taskinstance.py:1281} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-03T21:56:04.858+0000] {taskinstance.py:1300} INFO - Executing <Task(PythonOperator): get_data_nexrad_from_aws> on 2023-03-03 21:55:52.100497+00:00
+[2023-03-03T21:56:04.869+0000] {standard_task_runner.py:55} INFO - Started process 11542 to run task
+[2023-03-03T21:56:04.873+0000] {standard_task_runner.py:82} INFO - Running: ['***', 'tasks', 'run', 'sandbox', 'get_data_nexrad_from_aws', 'manual__2023-03-03T21:55:52.100497+00:00', '--job-id', '30', '--raw', '--subdir', 'DAGS_FOLDER/noaa.py', '--cfg-path', '/tmp/tmpmrxm4ary']
+[2023-03-03T21:56:04.874+0000] {standard_task_runner.py:83} INFO - Job 30: Subtask get_data_nexrad_from_aws
+[2023-03-03T21:56:04.928+0000] {task_command.py:388} INFO - Running <TaskInstance: sandbox.get_data_nexrad_from_aws manual__2023-03-03T21:55:52.100497+00:00 [running]> on host a1445a4c94cf
+[2023-03-03T21:56:04.969+0000] {taskinstance.py:1507} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=***
+AIRFLOW_CTX_DAG_ID=sandbox
+AIRFLOW_CTX_TASK_ID=get_data_nexrad_from_aws
+AIRFLOW_CTX_EXECUTION_DATE=2023-03-03T21:55:52.100497+00:00
+AIRFLOW_CTX_TRY_NUMBER=1
+AIRFLOW_CTX_DAG_RUN_ID=manual__2023-03-03T21:55:52.100497+00:00
+[2023-03-03T21:56:04.989+0000] {logging_mixin.py:137} INFO - ********************** get_all_geos_file_name_by_filter_new****************
+[2023-03-03T21:56:05.940+0000] {logging_mixin.py:137} INFO - get_nexrad_aws_details_by_filename
+[2023-03-03T21:56:05.942+0000] {logging_mixin.py:137} INFO - FOP120230101
+[2023-03-03T21:56:05.944+0000] {taskinstance.py:1768} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1705, in _execute_context
+    self.dialect.do_execute(
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/default.py", line 716, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UndefinedTable: relation "nexrad_metadata" does not exist
+LINE 1: INSERT INTO nexrad_metadata (station, year, month, date, fil...
+                    ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.9/site-packages/airflow/operators/python.py", line 175, in execute
+    return_value = self.execute_callable()
+  File "/home/airflow/.local/lib/python3.9/site-packages/airflow/operators/python.py", line 192, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/opt/airflow/dags/nexrad_main.py", line 54, in get_all_nexrad_file_name_by_filter_new
+    metadata.insert_data_into_nexrad(year=year, month=month, date=hour, station_id=station, filename=file_name)
+  File "/opt/airflow/dags/postgres_db_script.py", line 53, in insert_data_into_nexrad
+    self.cursor.execute(insert_str1)
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1185, in execute
+    return self._exec_driver_sql(
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1484, in _exec_driver_sql
+    ret = self._execute_context(
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1748, in _execute_context
+    self._handle_dbapi_exception(
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1929, in _handle_dbapi_exception
+    util.raise_(
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/util/compat.py", line 211, in raise_
+    raise exception
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/base.py", line 1705, in _execute_context
+    self.dialect.do_execute(
+  File "/home/airflow/.local/lib/python3.9/site-packages/sqlalchemy/engine/default.py", line 716, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation "nexrad_metadata" does not exist
+LINE 1: INSERT INTO nexrad_metadata (station, year, month, date, fil...
+                    ^
+
+[SQL: INSERT INTO nexrad_metadata (station, year, month, date, filename) VALUES('2023','01','01','FOP1','FOP120230101_000641_V06');]
+(Background on this error at: http://sqlalche.me/e/14/f405)
+[2023-03-03T21:56:05.959+0000] {taskinstance.py:1318} INFO - Marking task as FAILED. dag_id=sandbox, task_id=get_data_nexrad_from_aws, execution_date=20230303T215552, start_date=20230303T215604, end_date=20230303T215605
+[2023-03-03T21:56:05.971+0000] {standard_task_runner.py:100} ERROR - Failed to execute job 30 for task get_data_nexrad_from_aws ((psycopg2.errors.UndefinedTable) relation "nexrad_metadata" does not exist
+LINE 1: INSERT INTO nexrad_metadata (station, year, month, date, fil...
+                    ^
+
+[SQL: INSERT INTO nexrad_metadata (station, year, month, date, filename) VALUES('2023','01','01','FOP1','FOP120230101_000641_V06');]
+(Background on this error at: http://sqlalche.me/e/14/f405); 11542)
+[2023-03-03T21:56:05.999+0000] {local_task_job.py:208} INFO - Task exited with return code 1
+[2023-03-03T21:56:06.031+0000] {taskinstance.py:2578} INFO - 0 downstream tasks scheduled from follow-on schedule check
