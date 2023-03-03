@@ -1,25 +1,38 @@
 version: '3.3'
 
 services:
-  frontend:
-    build: ./frontend
-    ports:
-      - 8501:8501
-    network_mode: bridge
+  redis-server:
+      image: redis:latest
+  dbsql:
+    image: mysql:8.0.32
+    restart: always
+    environment:
+      MYSQL_USER: 'assignemnt_03'
+      MYSQL_PASSWORD: '123456789'
+      MYSQL_ROOT_PASSWORD: '123456789'
+      MYSQL_DATABASE: assignment_03
 
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - assignemnt-03:/var/lib/mysql
 
   backend:
     build: ./backend
     ports:
       - 8000:8000
-    network_mode: bridge
+    depends_on:
+      - dbsql
+      - redis-server
 
-  mysql:
-    build: ./airflow/plugins
+  frontend:
+    build: ./frontend
     ports:
-      - 8000:8000
-    network_mode: bridge
-
+      - 8501:8501
+    depends_on:
+      - backend
 
 volumes:
-  assignemnt-02:
+  assignemnt-03:
