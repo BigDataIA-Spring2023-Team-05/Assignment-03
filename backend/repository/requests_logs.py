@@ -88,12 +88,14 @@ def get_user_api_request_in_day(user_id:int, db: Session):
 
     return total_api_hits, total_succesfull_api_hits
 
-def get_user_api_request_data_by_hour_for_specific_date(date_requested, user_id:int, db: Session):
+def get_user_api_request_data_by_hour_for_specific_date(date_requested: Date, user_id:int, db: Session):
+    record = [z.to_json() for z in db.query(UserRequestsModel).filter(and_(cast(UserRequestsModel.created_date, Date) >= date_requested, UserRequestsModel.user_id == user_id)).all()]
+    # total_api_hits = db.query(UserRequestsModel).filter(and_(cast(UserRequestsModel.created_date, Date) == date_requested, UserRequestsModel.user_id == user_id)).all()
 
-    total_api_hits:List[UserRequestsModel] = db.query(UserRequestsModel).filter(and_(cast(UserRequestsModel.created_date, Date) == date_requested, UserRequestsModel.user_id == user_id)).all()
+    return record
 
 
+def get_all_users_for_admin(db: Session):
+    records =[z.to_json_for_all_user() for z in db.query(UserModel).all()]
 
-    print(total_api_hits)
-
-    return total_api_hits
+    return records

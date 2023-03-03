@@ -15,3 +15,10 @@ class UserRequestsModel(Base):
     created_date = Column(DateTime, default= datetime.datetime.utcnow)
 
     requests = relationship('UserModel', back_populates="user")
+
+    def to_json(self):
+        return {
+            "user_id": str(self.user_id),
+            "endpoint": str(self.endpoint),
+            "created_date": self.created_date.strftime("%m/%d/%Y"),
+        }
