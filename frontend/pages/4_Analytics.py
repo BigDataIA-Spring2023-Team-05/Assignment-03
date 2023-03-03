@@ -1,11 +1,218 @@
+import datetime
 import pandas as pd
 import streamlit as st
 import plotly.graph_objects as go
 import streamlit as st
 import requests
+import plotly.express as px
 
 if 'user_status' not in st.session_state:
-    st.session_state['user_status'] = 0  ## 1 for Admin and 2 for User
+    st.session_state['user_status'] = 1  ## 1 for Admin and 2 for User
+if 'authentication_status' not in st.session_state:
+    st.session_state['authentication_status'] = False
+if "visibility" not in st.session_state:
+    st.session_state.visibility = "hidden"
+    st.session_state.disabled = False
+
+## Inputs
+data = pd.read_csv("user_data.csv")
+hours = [str(x).zfill(2) for x in range(24)]
+
+print(data)
+if st.session_state['user_status']== 1:
+    st.subheader("Daily API calls per User")
+    column_1,column_2,column_3 = st.columns(3)
+    with column_1:
+        user = st.selectbox(
+        "Select the User",
+        data['Name'],
+        label_visibility="visible",
+        disabled=st.session_state.disabled,
+        key = "Plotly_1")
+    with column_2:
+        d1 = st.date_input(
+        "Select the date",
+        # value = datetime.date(2022, 7, 28),
+        min_value= datetime.date(2023, 2, 28), max_value=datetime.date.today(),key = "d1")
+    with column_3:
+        st.caption('Search')
+        if st.button("GO"):
+           st.session_state.visibility = "visible" 
+        else:
+            st.write(' ')
+    if st.session_state.visibility == "visible":
+        fig_admin_requests = go.Figure()
+        df_count = data.groupby('user')['TimeFrame'].count()  #group by date and user and count the number of requests
+        fig_admin_requests = px.line(df_count, x='hours', y='endpoint', color='user', title='Request Count by User') #plot the line chart
+        st.plotly_chart(fig_admin_requests)
+    st.subheader("Total API calls the previous day")
+    variable_output = '10'
+    html_str = f"""
+    <style>
+    p.a {{
+    font: bold 25px red;
+    }}
+    </style>
+    <p class="a">{variable_output}</p>
+    """
+    st.markdown(html_str, unsafe_allow_html=True)
+    st.subheader("Total Average calls last week")
+    variable_output_1 = '100'
+    html_str_1 = f"""
+    <style>
+    p.a {{
+    font: bold 25px red;
+    }}
+    </style>
+    <p class="a">{variable_output_1}</p>
+    """
+    st.markdown(html_str_1, unsafe_allow_html=True)
+    # st.subheader("Success Vs Failed Calls")
+    st.write(" ")
+    column_1,column_2 = st.columns(2)
+    with column_1:
+        st.markdown("#### Total Success Calls")
+        variable_output_2 = '150'
+        html_str_2 = f"""
+        <style>
+        p.a {{
+        font: bold 25px red;
+        }}
+        </style>
+        <p class="a">{variable_output_2}</p>
+        """
+        st.markdown(html_str_2, unsafe_allow_html=True)
+    with column_2:
+        st.markdown("#### Total Failed Calls")
+        variable_output_3 = '100'
+        html_str_3 = f"""
+        <style>
+        p.a {{
+        font: bold 25px red;
+        }}
+        </style>
+        <p class="a">{variable_output_3}</p>
+        """
+        st.markdown(html_str_3, unsafe_allow_html=True)
+
+    st.subheader("Each endpoint total number of calls")
+    column_1,column_2,column_3 = st.columns(3)
+    with column_1:
+        user = st.selectbox(
+        "Select the User",
+        data['Name'],
+        label_visibility="visible",
+        disabled=st.session_state.disabled,)
+    with column_2:
+        d2 = st.date_input(
+        "Select the date",
+        # value = datetime.date(2022, 7, 28),
+        min_value= datetime.date(2023, 2, 28), max_value=datetime.date.today(),key = "d2")
+    with column_3:
+        st.caption('Search')
+        if st.button("GO", key = "go1"):
+            variable_output_4 = '100'
+            html_str_4 = f"""
+            <style>
+            p.a {{
+            font: bold 25px red;
+            }}
+            </style>
+            <p class="a">{variable_output_4}</p>
+            """
+            st.markdown(html_str_4, unsafe_allow_html=True)
+        else:
+            st.write(' ')
+  ########################################################
+       
+elif st.session_state['user_status']== 2:
+    st.subheader("Daily API calls per User")
+    
+    # fig_user_requests = go.Figure()
+    # df_count = data.groupby('user')['TimeFrame'].count()  #group by date and user and count the number of requests
+    # fig_user_requests = px.line(df_count, x='hours', y='endpoint', color='user', title='Request Count by User') #plot the line chart
+    # st.plotly_chart(fig_user_requests)
+    st.subheader("Total API calls the previous day")
+    variable_output = '10'
+    html_str = f"""
+    <style>
+    p.a {{
+    font: bold 25px red;
+    }}
+    </style>
+    <p class="a">{variable_output}</p>
+    """
+    st.markdown(html_str, unsafe_allow_html=True)
+    st.subheader("Total Average calls last week")
+    variable_output_1 = '100'
+    html_str_1 = f"""
+    <style>
+    p.a {{
+    font: bold 25px red;
+    }}
+    </style>
+    <p class="a">{variable_output_1}</p>
+    """
+    st.markdown(html_str_1, unsafe_allow_html=True)
+    # st.subheader("Success Vs Failed Calls")
+    st.write(" ")
+    column_1,column_2 = st.columns(2)
+    with column_1:
+        st.markdown("#### Total Success Calls")
+        variable_output_2 = '150'
+        html_str_2 = f"""
+        <style>
+        p.a {{
+        font: bold 25px red;
+        }}
+        </style>
+        <p class="a">{variable_output_2}</p>
+        """
+        st.markdown(html_str_2, unsafe_allow_html=True)
+    with column_2:
+        st.markdown("#### Total Failed Calls")
+        variable_output_3 = '100'
+        html_str_3 = f"""
+        <style>
+        p.a {{
+        font: bold 25px red;
+        }}
+        </style>
+        <p class="a">{variable_output_3}</p>
+        """
+        st.markdown(html_str_3, unsafe_allow_html=True)
+
+    st.subheader("Each endpoint total number of calls")
+    column_1,column_2,column_3 = st.columns(3)
+    with column_1:
+        user = st.selectbox(
+        "Select the User",
+        data['Name'],
+        label_visibility="visible",
+        disabled=st.session_state.disabled,)
+    with column_2:
+        d2 = st.date_input(
+        "Select the date",
+        # value = datetime.date(2022, 7, 28),
+        min_value= datetime.date(2023, 2, 28), max_value=datetime.date.today(),key = "d2")
+    with column_3:
+        st.caption('Search')
+        if st.button("GO", key = "go1"):
+            variable_output_4 = '100'
+            html_str_4 = f"""
+            <style>
+            p.a {{
+            font: bold 25px red;
+            }}
+            </style>
+            <p class="a">{variable_output_4}</p>
+            """
+            st.markdown(html_str_4, unsafe_allow_html=True)
+        else:
+            st.write(' ')
+
+
+
 # clientLogs.put_log_events(      #logging to AWS CloudWatch logs
 #     logGroupName = "assignment-03",
 #     logStreamName = "ui",
