@@ -29,3 +29,11 @@ class Nexrad(BaseModel):
     day: str
     station_id: str
     file_name:str
+
+class UserRequests(BaseModel):
+    id: Optional[int]
+    created_date: str
+    statusCode: str
+
+    class Config:
+        orm_mode = True

@@ -22,6 +22,7 @@ class User(BaseModel):
         if isinstance(value, str):
             return value.lower()
         return value
+    
 
 class UserResponse(BaseModel):
     id: int
