@@ -1,8 +1,8 @@
 from fastapi import APIRouter, status, HTTPException, Response, Depends
-from .. schemas import User, Nexrad
-from .. oauth2 import get_current_user
+from schemas.index import User, Nexrad
+from middleware.oauth2 import get_current_user
 from awscloud.s3 import nexrad_main as aws
-from .. data.mapdata import MapData
+from data.mapdata import MapData
 import re
 
 mapData = MapData()
@@ -14,7 +14,7 @@ router = APIRouter(
 
 
 @router.get('/files')
-def get_all_nexrad_file(stationId: str, year: str, day: str, month: str, response: Response, get_current_user:User = Depends(get_current_user)):
+def get_all_nexrad_file(stationId: str, year: str, day: str, month: str, response: Response, get_current_user: User = Depends(get_current_user)):
     # Code to retrieve from filename form SQL Lite DB.
     result = aws.get_all_nexrad_file_name_by_filter(station=stationId, year=year, day=day, month=month)
 

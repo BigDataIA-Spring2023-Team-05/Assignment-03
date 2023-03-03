@@ -1,8 +1,7 @@
 from fastapi import Depends, status, HTTPException
-from . JWT_token import verify_token
+from utils.JWT_token import verify_token
 from fastapi.security import (
-    OAuth2PasswordBearer,
-    SecurityScopes,
+    OAuth2PasswordBearer
 )
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
@@ -15,4 +14,4 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
         headers={"WWW-Authenticate": authenticate_value},
     )
 
-    return verify_token(token, credentials_exception)
+    return verify_token(token = token, credentials_exception= credentials_exception)

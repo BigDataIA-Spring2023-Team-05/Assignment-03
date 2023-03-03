@@ -1,10 +1,16 @@
 from pydantic import BaseModel
+from typing import List, Optional, Union
 
 class Token(BaseModel):
     access_token: str
     token_type: str
 
+class TokenData(BaseModel):
+    id: int
+    username: Union[str, None] = None
+
 class User(BaseModel):
+    id: Optional[int]
     username: str
     password: str
 

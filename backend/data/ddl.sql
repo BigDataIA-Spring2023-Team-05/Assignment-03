@@ -3,6 +3,3 @@ CREATE TABLE IF NOT EXISTS users (
     username TEXT NOT NULL UNIQUE,
     passphrase TEXT NOT NULL
     );
-
--- INSERT INTO users (username, passphrase)
--- VALUES ('admin', 'admin');
