@@ -72,7 +72,7 @@ elif st.session_state['reg_status'] == True and st.session_state['done_status'] 
         st.image("https://eztechassist.com/wp-content/uploads/2018/04/FREE-Membership-green-01-1.png",width=200,output_format="auto")
         #image address(https://eztechassist.com/wp-content/uploads/2018/04/FREE-Membership-green-01-1.png)
         st.write('Click here for more info on the free membership')
-        if st.button("Join as a free member"):
+        if st.button("Join as a Free member :        10 API Calls"):
             st.session_state['plan_id'] = 1 
             st.write("You're a free member!")
         # else:
@@ -80,24 +80,24 @@ elif st.session_state['reg_status'] == True and st.session_state['done_status'] 
 
 
     with column_2:
-        
+        st.image("https://www.sicklecelldisease.org/wp-content/uploads/2019/01/Gold-Membership.png",width=200,output_format="auto")
+        #image address(https://www.sicklecelldisease.org/wp-content/uploads/2019/01/Gold-Membership.png)
+        st.write('Click here for more info on the Silver membership details')
+        if st.button("Join as a GOLD member :         15 API Calls"):
+            st.session_state['plan_id'] = 1
+            st.write("You're a GOLD member!")
 
-        st.image("https://www.sicklecelldisease.org/wp-content/uploads/2019/01/Silver-Membership.png",width=200,output_format="auto")
-        #image address(https://www.sicklecelldisease.org/wp-content/uploads/2019/01/Silver-Membership.png)
-        st.write('Click here for more info on the Gold membership details')
-        if st.button("Join as a silver member"):
-            st.session_state['plan_id'] = 2
-            st.write("You're a Silver member!")
+        
         # else:
         #     plan_id = 0
 
     with column_3:
-        st.image("https://www.sicklecelldisease.org/wp-content/uploads/2019/01/Gold-Membership.png",width=200,output_format="auto")
-        #image address(https://www.sicklecelldisease.org/wp-content/uploads/2019/01/Gold-Membership.png)
-        st.write('Click here for more info on the Silver membership details')
-        if st.button("Join as a GOLD member"):
-            st.session_state['plan_id'] = 1
-            st.write("You're a GOLD member!")
+        st.image("https://www.vafree.org/wp-content/uploads/2019/03/Platinum-Membership-e1553275136316.png",width=200,output_format="auto")
+        #image address(https://www.sicklecelldisease.org/wp-content/uploads/2019/01/Silver-Membership.png)
+        st.write('Click here for more info on the Gold membership details')
+        if st.button("Join as a Platinum member :      20 API Calls"):
+            st.session_state['plan_id'] = 2
+            st.write("You're a Silver member!")
         # else:
         #     plan_id = 0
     st.write(' ')
@@ -109,7 +109,6 @@ elif st.session_state['reg_status'] == True and st.session_state['done_status'] 
             st.session_state['reg_button'] = True
         if st.session_state['reg_button'] == True:
             url = 'http://localhost:8000/user/sign-up'
-            print(st.session_state['plan_id'])
             myobj = {'username': user_name ,'password': password, 'email' : email,'planId': st.session_state['plan_id']}
             result = requests.post(url, json = myobj)
 
