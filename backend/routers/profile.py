@@ -5,8 +5,7 @@ from schemas.schemas import TokenData
 from middleware.oauth2 import get_current_user
 from sqlalchemy.orm import Session
 from repository.service_plans import get_plan_by_user_id
-from repository.requests_logs import get_user_api_request_in_hr, get_user_api_request_in_day, get_user_api_request_data_by_hour_for_specific_date, get_all_apis_list_with_count
-from repository.user import find_user_api_key
+from repository.requests_logs import get_user_api_request_in_hr, get_user_api_request_in_day
 from fastapi.responses import JSONResponse
 from datetime import datetime
 
@@ -73,8 +72,3 @@ def get_user_api_hits_count_for_previus_days(get_current_user: TokenData = Depen
 #             )
 
 
-
-
-@router.get('/admin/all-apis-hits-with-count')
-def get_all_apis_list(get_current_user: TokenData = Depends(get_current_user), db: Session = Depends(db.get_db)):
-    return get_all_apis_list_with_count(db)

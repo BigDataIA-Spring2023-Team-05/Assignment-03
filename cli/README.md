@@ -1,1 +1,0 @@
-# DAMAG Assignment 03
