@@ -97,7 +97,7 @@ def create_csv():
     goes_csv_filename = 'GOES.csv'
     nexrad_csv_filename = 'NEXRAD.csv'
 
-    df1.to_csv(filepath + goes_csv_filename ,index=False)
-    df2.to_csv(filepath + nexrad_csv_filename ,index=False)
+    df1.to_csv(filepath + goes_csv_filename ,index=False, sep=',')
+    df2.to_csv(filepath + nexrad_csv_filename ,index=False, sep=',')
     
     metadata_instance.db_conn_close()
