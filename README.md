@@ -1,9 +1,177 @@
 # Assignment 3 (Data Engineering + Web Application Features)
 
 
+**Links to Live Applications**
+**Application Link:** http://ec2-52-207-76-7.compute-1.amazonaws.com/
+
+**FastAPI Docs:** http://ec2-52-207-76-7.compute-1.amazonaws.com:8000/docs
+
+**Codelabs:** https://codelabs-preview.appspot.com/?file_id=1OR1bguovlUQ2JJ8-BhAtYwoxhGIKSZdl_HjAuzZdiw4/edit?usp=sharing#0
+
+
 ### Overview
 This tool gathers weather information from SEVIR that was captured by the NEXRAD and GOES satellites. We are scheduling the jobs by defining DAGs that first collect GOES and NEXRAD satellite data from NOAA's AWS S3 bucket, second populate data into Postgres database, and then convert the data into CSV files. This creates an Extraction-Transformation-Loading (ETL) process to collect real-time data on a daily basis.
 
+# Project Structutre
+```
+📦 
+.github
+workflows
+main.yml
+.gitignore
+Airflow
+│  ├─ airflow
+│  │  ├─ dags
+│  │  │  ├─ main.py
+│  │  │  ├─ nexrad_main.py
+│  │  │  ├─ noaa.py
+│  │  │  └─ postgres_db_script.py
+│  │  └─ working_dir
+│  │     ├─ data
+│  │     │  ├─ GOES.csv
+│  │     │  ├─ GOES_1.csv
+│  │     │  ├─ NEXRAD.csv
+│  │     │  └─ NEXRAD_1.csv
+│  │     └─ great_expectations
+│  │        ├─ .gitignore
+│  │        ├─ expectations
+│  │        │  └─ .ge_store_backend_id
+│  │        ├─ great_expectations.yml
+│  │        ├─ great_expectations
+│  │        │  ├─ .gitignore
+│  │        │  ├─ checkpoints
+│  │        │  │  └─ noaa_ck_version1.yml
+│  │        │  ├─ expectations
+│  │        │  │  ├─ .ge_store_backend_id
+│  │        │  │  ├─ GOES_SUITE_GE.json
+│  │        │  │  └─ NEXRAD_SUITE_GE.json
+│  │        │  ├─ great_expectations.yml
+│  │        │  └─ plugins
+│  │        │     └─ custom_data_docs
+│  │        │        └─ styles
+│  │        │           └─ data_docs_custom_styles.css
+│  │        └─ plugins
+│  │           └─ custom_data_docs
+│  │              └─ styles
+│  │                 └─ data_docs_custom_styles.css
+│  ├─ db_data  //Files realated to postgresDB
+│  └─ docker-compose.yml
+├─ Arch_Diag
+│  ├─ fig.py
+│  └─ flow-diag.png
+├─ CLI-v2
+│  ├─ data
+│  │  └─ config
+│  └─ main.py
+├─ README.md
+backend
+│  ├─ Dockerfile
+awscloud
+│  │  ├─ __init__.py
+cloudwatch
+│  │  │  ├─ __init__.py
+│  │  │  └─ logger.py
+│  │  ├─ s3
+│  │  │  ├─ __init__.py
+main.py
+nexrad_main.py
+│  │  │  └─ sql_aws_metadata.py
+│  │  └─ ses
+│  │     └─ main.py
+│  ├─ config
+│  │  └─ db.py
+│  ├─ data
+│  │  ├─ __init__.py
+ddl.sql
+│  │  └─ mapdata.py
+│  ├─ main.py
+middleware
+│  │  ├─ oauth2.py
+│  │  └─ requests_logs.py
+│  ├─ models
+│  │  ├─ index.py
+requests_logs.py
+service_plan.py
+│  │  └─ user.py
+│  ├─ repository
+│  │  ├─ requests_logs.py
+service_plans.py
+│  │  └─ user.py
+│  ├─ requirements.txt
+routers
+│  │  ├─ __init__.py
+admin.py
+goes.py
+nexrad.py
+profile.py
+service_plans.py
+│  │  └─ user.py
+│  ├─ schemas
+│  │  ├─ dashboard.py
+goes.py
+index.py
+schemas.py
+service_plan.py
+│  │  └─ user.py
+│  ├─ setup.py
+test
+│  │  ├─ test_aws_goes.py
+│  │  └─ test_aws_nextrad.py
+│  └─ utils
+│     ├─ JWT_token.py
+__init__.py
+hashing.py
+logger.py
+redis.py
+│     └─ status_checker.py
+├─ cli
+│  ├─ cli
+│  │  ├─ __init__.py
+data
+│  │  │  └─ config
+│  │  └─ main.py
+│  ├─ poetry.lock
+pyproject.toml
+│  └─ tests
+│     └─ __init__.py
+├─ docker-compose.yml
+frontend
+│  ├─ Dockerfile
+Login.py
+pages
+│  │  ├─ 0_Register.py
+1_GOES.py
+2_nexrad_map.py
+3_NEXRAD.py
+4_Analytics.py
+5_Forgot_password.py
+│  │  └─ user_data.csv
+│  ├─ requirements.txt
+│  └─ user_data.csv
+├─ great-expections
+│  └─ great_expectations
+│     ├─ .gitignore
+data
+│     │  ├─ GOES.csv
+│     │  └─ NexRad.csv
+│     ├─ expectations
+│     │  ├─ .ge_store_backend_id
+NexRad_Suite.json
+│     │  └─ goes_suite.json
+│     ├─ great_expectations.yml
+│     └─ plugins
+│        └─ custom_data_docs
+│           └─ styles
+│              └─ data_docs_custom_styles.css
+├─ nginx
+│  ├─ Dockerfile
+│  └─ project.conf
+├─ screenshots
+│  ├─ cli_help.png
+│  └─ cli_login.png
+└─ setup.py
+```
+©generated by [Project Tree Generator](https://woochanleee.github.io/project-tree-generator)
 
 ## Additional UI Features added
 1. We have designed a service plan that allows users to subscribe to Free Tier that allows 10 API request limit and resets everyhour, Gold Tier that allows 15 API request limit and resets everyhour and lastly, a Platinum TIer that allows 20 API request limit and resets everyhour.
@@ -25,18 +193,7 @@ To run this project, you will need:
 - AWS Access, Secret, log access and log secret keys
 - .env file containing the AWS keys in the same directory as the Airflow & Main Project folder
 
-
-**Links to Live Applications**
-**Application Link:** http://ec2-52-207-76-7.compute-1.amazonaws.com/
-
-**FastAPI Docs:** http://ec2-52-207-76-7.compute-1.amazonaws.com:8000/docs
-
-**Codelabs:** https://codelabs-preview.appspot.com/?file_id=1OR1bguovlUQ2JJ8-BhAtYwoxhGIKSZdl_HjAuzZdiw4/edit?usp=sharing#0
-
-
-
 # Installation
-
 
 - Clone the repository.
 - Create .env in 'Backend' (Streamlit & Fast API folder) and 'Airflow' which will contain the access keys to AWS S3 bucket and Airflow UID using the commands below:
@@ -75,8 +232,8 @@ REDIST_HOST=localhost
 - If you have forgotten your password, use our "forgot password" option in the dashboard that sends out an OTP to your registered email
 - Search for the GOES-18 or NEXRAD file(s) by passing the file parameters or file name as an input
 - After searching two download options will be available,
-    1) Download the file from the NOAA's S3 bucket
-    2) Download the file via your S3 bucket as it will have the same details available as a download link
+  1) Download the file from the NOAA's S3 bucket
+  2) Download the file via your S3 bucket as it will have the same details available as a download link
 - AWS CloudWatch is used for logging the details of all file downloads on the new AWS S3 bucket
 - Analytics in the Streamlit app can be viewee which will allow us to understand the API calls made during a particular date and time for all successful attempts made on the application
 - After your API call limits have exhausted, you can upgrade your subscription from the dashboard
@@ -89,10 +246,23 @@ REDIST_HOST=localhost
 (Refer to the folder structure)
 - **Step1:** Navigate to CLI-v2 folder and open to main.py and run this python script inside terminal using the commands given below:
   `python main.py --help`
-  
+
   <img src="screenshots/cli_help.png">
 
 - **Step2:**    
   These are set of helper commands that will allow the user to login, logout, create-user, download-file, fetch-goes-file, fetch-nexrad-file one-at-a-time
-  
+
   <img src="screenshots/cli_login.png">
+
+# Team Information and Contribution
+
+Name | Contribution 
+--- | --- 
+Rishabh Jain | 25% 
+Venkata Sai Charan Amiti | 25% 
+Varsha Hindupur | 25% 
+Krishica Gopalakrishnan | 25% 
+
+# ATTESTATION:
+
+WE ATTEST THAT WE HAVEN’T USED ANY OTHER STUDENTS’ WORK IN OUR ASSIGNMENT AND ABIDE BY THE POLICIES LISTED IN THE STUDENT HANDBOOK.
