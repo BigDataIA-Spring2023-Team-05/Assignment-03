@@ -15,3 +15,4 @@ SQLAlchemy
 mysql-connector-python
 pydantic[email]
 redis
+sqlalchemy-utils

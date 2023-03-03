@@ -1,5 +1,5 @@
 import redis
-client = redis.Redis(host="localhost")
+client = redis.Redis(host="redis-server")
 
 def islimiter(key, limit):
     req = client.incr(key)

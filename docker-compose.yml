@@ -7,10 +7,11 @@ services:
     image: mysql:8.0.32
     restart: always
     environment:
-      MYSQL_DATABASE: 'db'
       MYSQL_USER: 'assignemnt_03'
       MYSQL_PASSWORD: '123456789'
       MYSQL_ROOT_PASSWORD: '123456789'
+      MYSQL_DATABASE: assignment_03
+
     ports:
       - '3306:3306'
     expose:
