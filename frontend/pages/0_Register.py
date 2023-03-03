@@ -97,15 +97,15 @@ elif st.session_state['reg_status'] == True and st.session_state['done_status'] 
         st.write('Click here for more info on the Gold membership details')
         if st.button("Join as a Platinum member :      20 API Calls"):
             st.session_state['plan_id'] = 2
-            st.write("You're a Silver member!")
+            st.write("You're a Platinum member!")
         # else:
         #     plan_id = 0
     st.write(' ')
-    col1, col2, col3 = st.columns([2,4,2])
+    col1, col2, col3 = st.columns([9,6,5])
     with col1:
         st.write(" ")
     with col2:
-        if st.button("Register",use_container_width = True):
+        if st.button("Register"):
             st.session_state['reg_button'] = True
         if st.session_state['reg_button'] == True:
             url = 'http://backend:8000/user/sign-up'
@@ -115,23 +115,24 @@ elif st.session_state['reg_status'] == True and st.session_state['done_status'] 
             # print(result.json())
 
             if result.status_code == 201:
-                x = requests.post(url, json = myobj).json()
+                x = result.json()
                 placeholder.empty()
                 st.session_state['409_check'] = True
                 st.session_state['done_status'] = True
+                placeholder = st.empty()
+                st.success("Registration successful")
+                # st.session_state['reg_status'] == True
         #    if st.session_state['reg_status'] == True and st.session_state['done_status'] == True:
         #         st.success("Registration successful")
             elif result.status_code == 404 or result.status_code == 422:
                 placeholder.empty()
-                st.error("Invalid email or password for Registration")
+                st.error("Invalid username or email or password for Registration")
             elif result.status_code == 409 and st.session_state['409_check'] == False:
                 placeholder.empty()
                 st.error("User already exists")
-        else:
+           
             st.write(' ')
     with col3:
         st.write(" ")
 
-elif st.session_state['reg_status'] == True and st.session_state['done_status'] == True:
-         st.success("Registration successful")
 

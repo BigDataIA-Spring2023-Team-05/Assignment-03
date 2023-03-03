@@ -18,28 +18,20 @@ router = APIRouter(
 get_db = db.get_db
 
 @router.get('/files')
-def get_all_goes_file(station: str, year: str, day: str, hour: str, response: Response, get_current_user: TokenData = Depends(get_current_user), is_limit: bool = Depends(get_user_specific_api_rate_limit)):
+def get_all_goes_file(station: str, year: str, day: str, hour: str, response: Response, get_current_user: TokenData = Depends(get_current_user)):
     # Code to retrieve from filename form SQL Lite DB.
-    if is_limit is True:
-        result = aws.get_all_geos_file_name_by_filter(station=station, year=year, day=day, hour=hour)
+    result = aws.get_all_geos_file_name_by_filter(station=station, year=year, day=day, hour=hour)
 
-        return {
-            'success':True,
-            'all_files': result
-        }
-    else:
-        return JSONResponse(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                content={
-                    'success': False, 
-                    "message": "API limit excceded!"
-                }
-            )
+    return {
+        'success':True,
+        'all_files': result
+    }
+
 
 @router.post('/generate/source-aws-link', status_code=status.HTTP_201_CREATED)
 def generate_aws_link(request: GOES, get_current_user: TokenData = Depends(get_current_user), is_limit: bool = Depends(get_user_specific_api_rate_limit)):
     if is_limit is True:
-        result = aws.get_aws_link_by_filename(request.file_name)
+        result = aws.get_our_aws_link_by_filename(request.file_name)
         
         if(result == None):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Requested file does not exists!")
@@ -47,7 +39,8 @@ def generate_aws_link(request: GOES, get_current_user: TokenData = Depends(get_c
         return {
             'success':True,
             'message':'link generated',
-            'goes_link':result
+            'goes_link':result[1],
+            'our_bucket_link': result[0]
         }
     else:
         return JSONResponse(

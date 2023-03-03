@@ -91,21 +91,23 @@ def nexrad_ui():
         ### API 'POST' CALL
         token = st.session_state["authentication_status"]
         headers = {'Authorization': f'Bearer {token}'}
-        url = 'http://backend:8000/nexrad/generate/aws-link'
+        url = 'http://backend:8000/nexrad/generate/source-aws-link'
         myobj = {'station_id': str(station) ,'year': year_nexrad ,'day': day_nexrad,'month': month_nexrad,'file_name': str(sl_file)}
-        nexrad_status = requests.post(url, json = myobj,headers = headers).status_code
-        if nexrad_status == 201:
+        nexrad_response = requests.post(url, json = myobj,headers = headers)
+        if nexrad_response.status_code == 201:
             st.success("fetched file url")
-            x = requests.post(url, json = myobj, headers=headers).json()    
+            x = nexrad_response.json()    
             print(x)
-            team_link = x['team_link']
+            team_link = x['our_bucket_link']
             nexrad_link = x['nexrad_link']
         # team_link, goes_link = s3.get_geos_aws_link(station,str(year_goes),str(doy), str(hour),str(sl_file))
             st.write('Our Link')
             st.write(team_link)
             st.write('NexRad Link')
             st.write(nexrad_link)
-        elif nexrad_status == 401 or nexrad_status == 404:
+        elif nexrad_response.status_code == 503:
+                st.error("API call limit reached")
+        elif nexrad_response.status_code == 401 or nexrad_response.status_code == 404:
             st.write("Input is Invalid")
     else:
         st.write(' ')
@@ -127,13 +129,15 @@ def nexrad_ui():
             # file_name = s3.get_aws_link_by_filename(file_input)
             token = st.session_state["authentication_status"]
             headers = {'Authorization': f'Bearer {token}'}
-            result_status = requests.post(f"http://backend:8000/nexrad/generate/aws-link-by-filename/{file_input}",headers = headers).status_code
-            if result_status == 201:
+            result = requests.post(f"http://backend:8000/nexrad/generate/aws-link-by-filename/{file_input}",headers = headers)
+            if result.status_code == 201:
             
-                result = requests.post(f"http://backend:8000/nexrad/generate/aws-link-by-filename/{file_input}",headers = headers).json()
-                file_name = result['bucket_link']
+                result = result.json()
+                file_name = result['our_bucket_link']
                 st.write(file_name)
-            elif result_status!= 201:
+            elif result.status_code == 503:
+                st.error("API call limit reached")
+            elif result.status_code!= 201 and result.status_code!= 503:
                 st.markdown('**:red[Input file name does not exist]**') 
         elif not match:
             st.markdown('**:red[Input format not supported]**')

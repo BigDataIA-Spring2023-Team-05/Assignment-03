@@ -7,10 +7,10 @@ import os
 load_dotenv()
 
 DB_USER = 'root'
-DB_PASSWORD = '123456789'
-DB_HOST = 'dbsql'
+DB_PASSWORD = os.environ.get('DB_PASSWORD')
+DB_HOST = os.environ.get('DB_HOST')
 DB_PORT = '3306'
-DB_NAME = 'assignment_03'
+DB_NAME = os.environ.get('DB_NAME')
 
 SQLALCHEMY_DATABASE_URL = f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 

@@ -24,11 +24,13 @@ def verify_token(token:str, credentials_exception):
     try:
         payload = jwt.decode(token,  os.environ.get('SECRET_KEY'), algorithms=os.environ.get('ALGORITHM'))
         username: str = payload.get("username")
+        userType: str = payload.get("account_type")
+
         if username is None:
             raise credentials_exception
         
         token_scopes = payload.get("scopes", [])
-        token_data = TokenData(id = payload.get("id"), username= username)
+        token_data = TokenData(id = payload.get("id"), username= username, userType = userType)
         return token_data
     except (JWTError):
         raise credentials_exception
@@ -36,12 +38,14 @@ def verify_token(token:str, credentials_exception):
 def verify_token_v2(token:str):
     try:
         payload = jwt.decode(token,  os.environ.get('SECRET_KEY'), algorithms=os.environ.get('ALGORITHM'))
-        username: str = payload.get("username")
+        username: str = payload.get("username")        
+        userType: str = payload.get("account_type")
+
         if username is None:
             return None
         
         token_scopes = payload.get("scopes", [])
-        token_data = TokenData(id = payload.get("id"), username= username)
+        token_data = TokenData(id = payload.get("id"), username= username, userType = userType)
         return token_data
     except Exception as e:
         print(e)

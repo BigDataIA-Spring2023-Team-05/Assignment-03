@@ -8,6 +8,7 @@ from repository import service_plans as servicePlans
 from repository import user as UserRepository
 from schemas.user import User
 from pydantic import BaseModel, Field, EmailStr, validator
+from models.user import Role
 
 app =  FastAPI()
 db = SessionLocal()
@@ -18,7 +19,7 @@ def init_db():
     servicePlans.create(2, 'Gold', 15, db= db)
     servicePlans.create(3, 'Platinum', 20, db= db)
     UserRepository.create(User(username='damg7245', email=EmailStr('rishab1300@gmail.com'), password='spring2023', planId=2), db= db)
-    UserRepository.create(User(username='admin', email=EmailStr('mail@heyitsrj.com'), password='spring2023', planId=1), db= db)
+    UserRepository.create(User(username='admin', email=EmailStr('mail@heyitsrj.com'), password='spring2023', planId=1, userType = Role.Admin), db= db)
 
     print("Initialized the db")
 

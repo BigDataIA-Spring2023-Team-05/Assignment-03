@@ -6,7 +6,7 @@ import os
 
 app = typer.Typer()
 
-base_url ='http://ec2-52-207-76-7.compute-1.amazonaws.com:8000/docs'
+base_url ='http://ec2-52-207-76-7.compute-1.amazonaws.com:8000'
 
 
 

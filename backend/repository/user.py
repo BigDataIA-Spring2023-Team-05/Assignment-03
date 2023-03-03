@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models.index import UserModel, ServicePlanModel
+from models.index import UserModel, ServicePlanModel, Role
 from schemas.index import User, LoginResponse, UserPlan, Plan
 from utils import hashing, JWT_token
 from sqlalchemy.exc import IntegrityError
@@ -38,9 +38,10 @@ def find_user(username: str, password: str, db: Session):
                 detail="invalid credentials"
             )
     
-    access_token = JWT_token.create_access_token(data={"id": user.id, "username": user.username, "account_type": ""})
+    access_token = JWT_token.create_access_token(data={"id": user.id, "username": user.username, "account_type": 1 if user.userType == Role.Admin else 2})
     write_user_login_logs(f"{username} successfully logged in!")
     
+
     return LoginResponse(username= str(user.username), access_token= access_token, token_type= 'bearer', userType=user.userType)
 
 def find_user_by_email(email:str, db: Session):

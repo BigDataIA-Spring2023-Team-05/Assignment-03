@@ -17,36 +17,7 @@ placeholder_2 = st.empty()
 placeholder_3 = st.empty()
 placeholder_4 = st.empty()
 placeholder_5 = st.empty()
-# submit = False
-# submit_2 = False
-# submit_3 = False
-# submit_4 = False
-# submit_5 = False
-# if 'submit_2' not in st.session_state:
-#     st.session_state['submit_2'] = False
-# if 'submit_3' not in st.session_state:
-#     st.session_state['submit_3'] = False
-# if 'submit_4' not in st.session_state:
-#     st.session_state['submit_4'] = False
-# if 'submit_5' not in st.session_state:
-#     st.session_state['submit_5'] = False
-# if st.session_state.get('submit_5') != True:
 
-#     st.session_state['submit_2'] = submit_2
-
-# if st.session_state.get('submit_3') != True:
-#     st.session_state['submit_3'] = submit_3
-
-# if st.session_state.get('submit_4') != True:
-#     st.session_state['submit_4'] = submit_4
-
-# if st.session_state.get('submit_5') != True:
-#     st.session_state['submit_5'] = submit_5
-# var = False
-# var_2 = False
-# var_3 = False
-# var_4 = False
-# var_5 = False
 actual_email = "admin"
 actual_password = "admin"
 session = requests.Session()
@@ -55,7 +26,7 @@ session = requests.Session()
 if 'authentication_status' not in st.session_state:
     st.session_state['authentication_status'] = False
 if 'user_status' not in st.session_state:
-    st.session_state['user_status'] = 0    ## 1 for Admin and 2 for User
+    st.session_state['user_status'] = 2    ## 1 for Admin and 2 for User
 if 'forgot_status' not in st.session_state:
     st.session_state['forgot_status'] = False
 if 'reg_status' not in st.session_state:
@@ -104,6 +75,7 @@ if st.session_state["authentication_status"] == False:
             log_username = x['username']
             log_token = x['access_token']
             st.session_state["user_status"] = x['userType']
+            print(st.session_state["user_status"])
             # goes_ui.goes_ui()
 
             # print(log_username)
@@ -128,15 +100,8 @@ else:
     st.header("User logged in Successfully")
     logout = st.button("Log Out")
     if logout:
-        st.session_state["authentication_status"] == False
+        st.session_state["authentication_status"] = False
         st.header("Logged Out Successfully")
-# if st.session_state["authentication_status"]:
-#     authenticator.logout('Logout', 'main')
-#     st.write(f'Welcome *{st.session_state["name"]}*')
-#     st.title('Some content')
-# elif st.session_state["authentication_status"] == False:
-#     st.error('Username/password is incorrect')
-# elif st.session_state["authentication_status"] == None:
-#     st.warning('Please enter your username and password')
+
 
 

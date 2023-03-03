@@ -8,6 +8,7 @@ class Token(BaseModel):
 class TokenData(BaseModel):
     id: int
     username: Union[str, None] = None
+    userType: int = 2
 
 class User(BaseModel):
     id: Optional[int]

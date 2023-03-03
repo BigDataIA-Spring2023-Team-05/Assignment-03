@@ -42,7 +42,7 @@ def get_all_nexrad_file(stationId: str, year: str, day: str, month: str, respons
 def generate_aws_link(request: Nexrad, get_current_user:User = Depends(get_current_user), is_limit: bool = Depends(get_user_specific_api_rate_limit)):
     
     if is_limit is True:
-        result = aws.get_nexrad_aws_link_by_filename(request.file_name)
+        result = aws.get_our_aws_link_by_filename(request.file_name)
         
         if(result == None):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Requested file does not exists!")
@@ -51,7 +51,8 @@ def generate_aws_link(request: Nexrad, get_current_user:User = Depends(get_curre
         return {
             'success':True,
             'message':'link generated',
-            'nexrad_link':result
+            'nexrad_link':result[1],
+            'our_bucket_link': result[0]
         }
     else:
         return JSONResponse(

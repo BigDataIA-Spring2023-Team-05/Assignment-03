@@ -17,3 +17,4 @@ pydantic[email]
 redis
 sqlalchemy-utils
 typer-cli
+pydantic

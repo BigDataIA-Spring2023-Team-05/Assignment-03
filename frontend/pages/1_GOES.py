@@ -101,24 +101,26 @@ def goes_ui():
         ### GOES API POST CALL
         token = st.session_state["authentication_status"]
         headers = {'Authorization': f'Bearer {token}'}
-        url = 'http://backend:8000/goes/generate/aws-link'
+        url = 'http://backend:8000/goes/generate/source-aws-link'
         myobj = {'station': 'ABI-L1b-RadC' ,'year': year_goes ,'day': doy,'hour':hour,'file_name': str(sl_file)}
         # print(myobj)
-        goes_status = requests.post(url, json= myobj,headers=headers).status_code
-        print(goes_status)
-        if goes_status == 201:
+        goes_result = requests.post(url, json= myobj,headers=headers)
+        # print(goes_status)
+        if goes_result.status_code == 201:
             st.success("fetched file url")
-            x = requests.post(url, json = myobj, headers=headers).json()    
+            x = goes_result.json()    
             print(x)
-            team_link = x['team_link']
+            team_link = x['our_bucket_link']
             goes_link = x['goes_link']
         # team_link, goes_link = s3.get_geos_aws_link(station,str(year_goes),str(doy), str(hour),str(sl_file))
             st.write('Our Link')
             st.write(team_link)
             st.write('GOES Link')
             st.write(goes_link)
-        elif goes_status == 401 or goes_status == 404:
+        elif goes_result.status_code == 401 or goes_result.status_code == 404:
             st.write("Input is Invalid")
+        elif goes_result.status_code == 503:
+            st.error("API call limit reached")
         # o_df = pd.DataFrame(data = file_output, columns = ['File Name'])
         # l = []
         # for f in file_output:
@@ -149,14 +151,16 @@ def goes_ui():
             # file_name = s3.get_aws_link_by_filename(file_input)
             token = st.session_state["authentication_status"]
             headers = {'Authorization': f'Bearer {token}'}
-            result_status = requests.post(f"http://backend:8000/goes/generate/aws-link-by-filename/{file_input}",headers = headers).status_code
-            if result_status == 201:
-            
-                result = requests.post(f"http://backend:8000/goes/generate/aws-link-by-filename/{file_input}",headers = headers).json()
-                file_name = result['bucket_link']
+            result = requests.post(f"http://backend:8000/goes/generate/aws-link-by-filename/{file_input}",headers = headers)
+
+            if result.status_code == 201:
+                file_name = result.json()['source_bucket_link']
                 st.write(file_name)
-            elif result_status!= 201:
+            elif result.status_code == 503:
+                st.error("API call limit reached")
+            elif result.status_code!= 201 and result.status_code!= 503:
                 st.markdown('**:red[Input file does not exist]**') 
+            
         elif not match:
             st.markdown('**:red[Input format not supported]**')
 

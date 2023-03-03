@@ -4,7 +4,7 @@ import os
 
 load_dotenv()
 
-client = redis.Redis(host='redis-server')
+client = redis.Redis(host=os.environ.get('REDIST_HOST'))
 
 def islimiter(key, limit):
     req = client.incr(key)
