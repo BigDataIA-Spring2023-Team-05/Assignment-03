@@ -88,43 +88,6 @@ if st.session_state["authentication_status"] == False:
             switch_page('Register')
 
 
-    # if st.session_state['submit_2']: 
-    #     placeholder_2.empty()
-    #     # var = True
-    #     # var_2 = True
-    #     # var_3 = True
-    #     # var_4 = True
-    #     # var_5 = True
-    #     with placeholder_2.form("forgot"):    
-    #         # placeholder.empty()
-    #         # with placeholder.form("Forgot_Password"):
-    #         f_email = st.text_input("Please enter your email")
-    #         submit_3 = st.form_submit_button("Send OTP")
-    #         print("submit_3  "+str(submit_3))
-    #         if submit_3:
-
-    #             st.session_state['submit_3'] = True
-    #             # var_3 = True
-    #             # var_2 = True
-
-    # if st.session_state['submit_3']:
-    #     with placeholder_3.form("otp"): 
-    #         print("send otp button working")
-    #         otp = st.text_input("Enter verfication OTP")
-    #         submit_4 = st.form_submit_button("Verify")
-    #         if submit_4:
-    #             st.session_state['submit_4'] = True
-    # if st.session_state['submit_4']:
-    #     with placeholder_4.form("password"): 
-    #         password = st.text_input("Password", type="password")
-    #         confirm_password = st.text_input("Confirm Password", type="password")
-    #         submit_5 = st.form_submit_button("Done")
-    #         if submit_5:
-    #           st.session_state.done = True  
-    # if st.session_state.done:
-    #     st.success("Password changed") 
-
-
 
     if submit:
         # If the form is submitted and the email and password are correct,
@@ -140,7 +103,7 @@ if st.session_state["authentication_status"] == False:
             st.success("Login successful")
             log_username = x['username']
             log_token = x['access_token']
-            st.session_state["user_status"] = x['userType'].astype(int)
+            st.session_state["user_status"] = x['userType']
             # goes_ui.goes_ui()
 
             # print(log_username)
