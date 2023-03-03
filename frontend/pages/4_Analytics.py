@@ -70,8 +70,8 @@ def analytics():
         
         # myobj = {'station': 'ABI-L1b-RadC' ,'year': year_goes ,'day': doy,'hour':hour,'file_name': str(sl_file)}
         # print(myobj)
-        result = requests.get('http://localhost:8000/profile/api-hits-previous-days',headers=headers).json()
-        code1 = requests.get('http://localhost:8000/profile/api-hits-previous-days',headers=headers).status_code
+        result = requests.get('http://backend:8000/profile/api-hits-previous-days',headers=headers).json()
+        code1 = requests.get('http://backend:8000/profile/api-hits-previous-days',headers=headers).status_code
         # print(code1)
         if(st.session_state['user_status'] == 2):
             variable_output = sum
@@ -95,8 +95,8 @@ def analytics():
         
         # myobj = {'station': 'ABI-L1b-RadC' ,'year': year_goes ,'day': doy,'hour':hour,'file_name': str(sl_file)}
         # print(myobj)
-        result = requests.get('http://localhost:8000/profile/api-hits-previous-days',headers=headers).json()
-        code1 = requests.get('http://localhost:8000/profile/api-hits-previous-days',headers=headers).status_code
+        result = requests.get('http://backend:8000/profile/api-hits-previous-days',headers=headers).json()
+        code1 = requests.get('http://backend:8000/profile/api-hits-previous-days',headers=headers).status_code
         # print(code1)
         if(st.session_state['user_status'] == 2):
             variable_output_1 = sum
@@ -120,8 +120,8 @@ def analytics():
             
             token = st.session_state["authentication_status"]
             headers = {'Authorization': f'Bearer {token}'}
-            result = requests.get('http://localhost:8000/profile/api-hits-previous-days',headers=headers).json()
-            code1 = requests.get('http://localhost:8000/profile/api-hits-previous-days',headers=headers).status_code
+            result = requests.get('http://backend:8000/profile/api-hits-previous-days',headers=headers).json()
+            code1 = requests.get('http://backend:8000/profile/api-hits-previous-days',headers=headers).status_code
             if(st.session_state['user_status'] == 2):
                 variable_output_2 = sum - 2
             else:
@@ -142,8 +142,8 @@ def analytics():
             
             token = st.session_state["authentication_status"]
             headers = {'Authorization': f'Bearer {token}'}
-            result = requests.get('http://localhost:8000/profile/api-hits-previous-days',headers=headers).json()
-            code1 = requests.get('http://localhost:8000/profile/api-hits-previous-days',headers=headers).status_code
+            result = requests.get('http://backend:8000/profile/api-hits-previous-days',headers=headers).json()
+            code1 = requests.get('http://backend:8000/profile/api-hits-previous-days',headers=headers).status_code
             if(st.session_state['user_status'] == 2):
                 variable_output_3 = 2
             else:

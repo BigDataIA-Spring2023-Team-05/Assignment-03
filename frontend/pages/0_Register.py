@@ -108,7 +108,7 @@ elif st.session_state['reg_status'] == True and st.session_state['done_status'] 
         if st.button("Register",use_container_width = True):
             st.session_state['reg_button'] = True
         if st.session_state['reg_button'] == True:
-            url = 'http://localhost:8000/user/sign-up'
+            url = 'http://backend:8000/user/sign-up'
             myobj = {'username': user_name ,'password': password, 'email' : email,'planId': st.session_state['plan_id']}
             result = requests.post(url, json = myobj)
 

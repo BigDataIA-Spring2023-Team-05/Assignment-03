@@ -3,3 +3,4 @@ numpy
 pandas
 plotly
 streamlit_authenticator
+streamlit_extras

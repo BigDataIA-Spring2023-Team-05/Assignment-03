@@ -25,7 +25,7 @@ elif st.session_state['forgot_status'] == True and st.session_state['done_status
             f_email = st.text_input("Please enter your email")
             submit = st.form_submit_button("Send OTP")
             if submit:
-                url = 'http://localhost:8000/user/forgot-password'
+                url = 'http://backend:8000/user/forgot-password'
                 myobj = {'email': f_email}
         
                 check = requests.post(url, json = myobj)
@@ -36,7 +36,7 @@ elif st.session_state['forgot_status'] == True and st.session_state['done_status
             submit_2 = st.form_submit_button("Confirm")
             if submit_2:
                 st.session_state['done_status'] = True
-                url = 'http://localhost:8000/user/reset-password'
+                url = 'http://backend:8000/user/reset-password'
                 myobj = {'email': f_email ,'otp': otp, 'new_password' : password,'confirm_password': confirm_password}
                 result = requests.post(url, json = myobj)
                 print(result)
