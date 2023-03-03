@@ -140,7 +140,7 @@ if st.session_state["authentication_status"] == False:
             st.success("Login successful")
             log_username = x['username']
             log_token = x['access_token']
-            
+            st.session_state["user_status"] = x['userType'].astype(int)
             # goes_ui.goes_ui()
 
             # print(log_username)
