@@ -38,3 +38,28 @@ def write_nexrad_log(message:str):
             }
         ]
     )
+
+
+def write_user_login_logs(message:str):
+    clientlogs.put_log_events(
+        logGroupName = "damg-assignment-1",
+        logStreamName = "user-login",
+        logEvents=[
+            {
+                'timestamp':int(time.time()*1e3),
+                'message':message
+            }
+        ]
+    )
+
+def write_user_sign_up_logs(message:str):
+    clientlogs.put_log_events(
+        logGroupName = "damg-assignment-1",
+        logStreamName = "user-sign-up",
+        logEvents=[
+            {
+                'timestamp':int(time.time()*1e3),
+                'message':message
+            }
+        ]
+    )
