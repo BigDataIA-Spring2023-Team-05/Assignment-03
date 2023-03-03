@@ -1,6 +1,8 @@
 version: '3.3'
 
 services:
+  redis-server:
+      image: redis:latest
   dbsql:
     image: mysql:8.0.32
     restart: always
@@ -22,6 +24,7 @@ services:
       - 8000:8000
     depends_on:
       - dbsql
+      - redis-server
 
   frontend:
     build: ./frontend
