@@ -54,6 +54,8 @@ session = requests.Session()
 # Insert a form in the container
 if 'authentication_status' not in st.session_state:
     st.session_state['authentication_status'] = False
+if 'user_status' not in st.session_state:
+    st.session_state['user_status'] = 0    ## 1 for Admin and 2 for User
 if 'forgot_status' not in st.session_state:
     st.session_state['forgot_status'] = False
 if 'reg_status' not in st.session_state:
@@ -138,6 +140,7 @@ if st.session_state["authentication_status"] == False:
             st.success("Login successful")
             log_username = x['username']
             log_token = x['access_token']
+            
             # goes_ui.goes_ui()
 
             # print(log_username)
