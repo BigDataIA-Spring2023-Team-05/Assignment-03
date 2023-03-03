@@ -8,10 +8,9 @@ myenvBDSIA
 .idea
 team5.egg-info
 .ipynb_checkpoints
-<<<<<<< Updated upstream
 .env
-=======
 .env
 venv
 venv_varsha
->>>>>>> Stashed changes
+db_data
+logs
