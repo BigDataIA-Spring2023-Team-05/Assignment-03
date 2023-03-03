@@ -56,6 +56,8 @@ if 'authentication_status' not in st.session_state:
     st.session_state['authentication_status'] = False
 if 'forgot_status' not in st.session_state:
     st.session_state['forgot_status'] = False
+if 'reg_status' not in st.session_state:
+    st.session_state['reg_status'] = False
 if st.session_state["authentication_status"] == False:
     with placeholder.form("login"):
         var = True
@@ -71,14 +73,17 @@ if st.session_state["authentication_status"] == False:
             submit = st.form_submit_button("Login")
             
         with column_2:
-            st.write = " "
+            submit_3 = st.form_submit_button("Register")
         with column_3:
             submit_2 = st.form_submit_button("Forgot Password")
             
     # if st.button    
-            if submit_2:
-                st.session_state['forgot_status'] = True
-                switch_page('Forgot_password')
+        if submit_2:
+            st.session_state['forgot_status'] = True
+            switch_page('Forgot_password')
+        if submit_3:
+            st.session_state['reg_status'] = True
+            switch_page('Register')
 
 
     # if st.session_state['submit_2']: 
