@@ -44,14 +44,14 @@ def analytics():
             else:
                 st.write(' ')
         if st.session_state.visibility == "visible":
-            if user == 'free':
+            if user == 'silver':
                 st.session_state['user_status'] = 2
                 fig_admin_requests = go.Figure()
-                d1 = pd.DataFrame({'Calls': np.random.randint(0,2,24), 'Time of the Day': pd.date_range('00:00', '23:00', freq='H')})
+                d1 = pd.DataFrame({'Calls': list , 'Time of the Day': pd.date_range('00:00', '23:00', freq='H')})
                 fig_admin_requests = px.line(d1, x='Time of the Day', y='Calls', title='Request Count by User') #plot the line chart
                 st.plotly_chart(fig_admin_requests)
 
-            if user == 'silver':
+            if user == 'free':
                 fig_admin_requests1 = go.Figure()
                 d2 = pd.DataFrame({'Calls': np.random.randint(0,0,24), 'Time of the Day': pd.date_range('00:00', '23:00', freq='H')})
                 fig_admin_requests1 = px.line(d2, x='Time of the Day', y='Calls', title='Request Count by User') #plot the line chart
@@ -189,6 +189,7 @@ def analytics():
         #         st.write(' ')
     ########################################################
 d1 = pd.DataFrame({'Calls': np.random.randint(0,2,24), 'Time of the Day': pd.date_range('00:00', '23:00', freq='H')})  
+list = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 0, 0, 2, 0, 0,3, 0, 1, 0, 0]
 sum = d1['Calls'].sum()     
  
 if "authentication_status" not in st.session_state:
