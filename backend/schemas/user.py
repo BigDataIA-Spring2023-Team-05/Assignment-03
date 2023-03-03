@@ -54,6 +54,7 @@ class VerifyForgotPassword(BaseModel):
 
 class PasswordResetRequest(BaseModel):
     email:EmailStr
+    otp:int
     new_password:str = Field(
         min_length=8
     )

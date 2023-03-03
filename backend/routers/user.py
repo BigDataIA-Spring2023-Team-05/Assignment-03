@@ -65,29 +65,53 @@ def send_reset_otp_to_user(request:ForgotPassword, db: Session = Depends(get_db)
         }
     )
 
-@router.post('/verify-otp', status_code=status.HTTP_200_OK)
-def verify_OTP(request: VerifyForgotPassword, db:Session = Depends(get_db)):
+# @router.post('/verify-otp', status_code=status.HTTP_200_OK)
+# def verify_OTP(request: VerifyForgotPassword, db:Session = Depends(get_db)):
+#     otp_stored = verify_otp(request.email)
+
+#     if otp_stored is None:
+#         return JSONResponse(
+#             status_code=status.HTTP_404_NOT_FOUND,
+#             content={
+#                 'success': False, 
+#                 'message': "OTP expired"
+#                 }
+#         )
+
+#     if otp_stored == str(request.otp):
+#         return JSONResponse(
+#         status_code=status.HTTP_200_OK,
+#         content={
+#             'success': True, 
+#             'message': "OTP verified",
+#             'email': request.email
+#             }
+#         )
+#     else:
+#         return JSONResponse(
+#         status_code=status.HTTP_401_UNAUTHORIZED,
+#         content={
+#             'success': False, 
+#             "message": "Unable to verify OTP."
+#             }
+#         )
+
+
+@router.post('/reset-password', status_code=status.HTTP_201_CREATED)
+def change_to_new_password(request:PasswordResetRequest, db: Session = Depends(get_db)):
+
     otp_stored = verify_otp(request.email)
-
+    
     if otp_stored is None:
-        return JSONResponse(
-            status_code=status.HTTP_404_NOT_FOUND,
-            content={
-                'success': False, 
-                'message': "OTP expired"
-                }
-        )
+            return JSONResponse(
+                status_code=status.HTTP_404_NOT_FOUND,
+                content={
+                    'success': False, 
+                    'message': "OTP expired"
+                    }
+            )
 
-    if otp_stored == str(request.otp):
-        return JSONResponse(
-        status_code=status.HTTP_200_OK,
-        content={
-            'success': True, 
-            'message': "OTP verified",
-            'email': request.email
-            }
-        )
-    else:
+    if otp_stored != str(request.otp):
         return JSONResponse(
         status_code=status.HTTP_401_UNAUTHORIZED,
         content={
@@ -96,10 +120,6 @@ def verify_OTP(request: VerifyForgotPassword, db:Session = Depends(get_db)):
             }
         )
 
-
-@router.post('/reset-password', status_code=status.HTTP_201_CREATED)
-def change_to_new_password(request:PasswordResetRequest, db: Session = Depends(get_db)):
-    
     result = user.change_user_password_to_new(request.email, request.new_password, db= db)
 
     if request.new_password != request.confirm_password:
