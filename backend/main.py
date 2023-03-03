@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 
 from fastapi import FastAPI
 import uvicorn
-from routers import user, goes, nexrad, service_plans, profile
+from routers import user, goes, nexrad, service_plans, profile, admin
 from config.db import Base, engine, SessionLocal
 from repository import service_plans as servicePlans
 from repository import user as UserRepository
@@ -30,6 +30,7 @@ async def startup():
     app.include_router(nexrad.router)
     app.include_router(service_plans.router)
     app.include_router(profile.router)
+    app.include_router(admin.router)
     
     init_db()
 

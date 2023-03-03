@@ -55,22 +55,22 @@ def get_user_api_hits_count_for_previus_days(get_current_user: TokenData = Depen
 
 
 
-@router.get('/api-hits')
-def get_user_api_hits_for_particular_days(date_request: str, get_current_user: TokenData = Depends(get_current_user), db: Session = Depends(db.get_db)):
+# @router.get('/api-hits')
+# def get_user_api_hits_for_particular_days(date_request: str, get_current_user: TokenData = Depends(get_current_user), db: Session = Depends(db.get_db)):
 
-    requested_date = datetime.strptime(date_request, "%m/%d/%Y").date()
-    print(requested_date)
+#     requested_date = datetime.strptime(date_request, "%m/%d/%Y").date()
+#     print(requested_date)
 
-    total_api_hits = get_user_api_request_data_by_hour_for_specific_date(requested_date, get_current_user.id, db= db)
+#     total_api_hits = get_user_api_request_data_by_hour_for_specific_date(requested_date, get_current_user.id, db= db)
 
 
-    return JSONResponse(
-                status_code=status.HTTP_200_OK,
-                content={
-                    'success': True, 
-                    "total_api_hits_in_previous_day": total_api_hits,
-                }
-            )
+#     return JSONResponse(
+#                 status_code=status.HTTP_200_OK,
+#                 content={
+#                     'success': True, 
+#                     "api_req": total_api_hits,
+#                 }
+#             )
 
 
 

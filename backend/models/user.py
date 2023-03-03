@@ -26,3 +26,8 @@ class UserModel(Base):
     plan = relationship("ServicePlanModel", back_populates="user")
 
     # user_plans = relationship("ServicePlanModel", back_populates="plans")
+    def to_json_for_all_user(self):
+        return {
+            "id": str(self.id),
+            "username": str(self.username)
+        }
