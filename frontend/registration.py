@@ -38,9 +38,9 @@ if submitted:
     else:
         st.success("Registration successful!")
 
-# col1, col2, col3 = st.columns(3)
 
-# create three columns
+
+# creating three columns
 column_1,column_2,column_3 = st.columns(3)
 
 #displaying an image in each column
@@ -65,6 +65,7 @@ with column_3:
     st.write('Click here for more info on the Silver membership details')
     if st.button("Join as a silver member"): 
         st.write("You're a Silver member!")
+
     
 
 
