@@ -58,6 +58,4 @@ def get_user_api_request_in_hr(user_id:int, db: Session):
                 )
             )).count()
 
-    print(total_api_hits)
-
     return total_api_hits, total_succesfull_api_hits

@@ -34,7 +34,7 @@ def find_user(username: str, password: str, db: Session):
     
     access_token = JWT_token.create_access_token(data={"id": user.id, "username": user.username, "account_type": ""})
     
-    return LoginResponse(username= str(user.username), access_token= access_token, token_type= 'bearer')
+    return LoginResponse(username= str(user.username), access_token= access_token, token_type= 'bearer', userType=user.userType)
 
 def find_user_by_email(email:str, db: Session):
     user = db.query(UserModel).filter(UserModel.email == email).first()
@@ -61,3 +61,14 @@ def change_user_password_to_new(email: str, new_pasword:str, db:Session):
     db.commit()
     db.refresh(user)
     return user
+
+def find_user_api_key(user_id:int, db: Session) -> str:
+    user = db.query(UserModel).filter(UserModel.id == user_id).first()
+
+    if not user:
+        raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, 
+                detail=f"User not found"
+            )
+    
+    return str(user.apiKey)

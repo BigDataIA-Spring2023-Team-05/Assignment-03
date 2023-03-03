@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field, EmailStr, validator
 from typing import List, Optional
 from . service_plan import Plan
-
+from models.user import Role
 class User(BaseModel):
     username:str = Field(
         default=None,
@@ -41,6 +41,7 @@ class UserPlan(BaseModel):
 
 class LoginResponse(BaseModel):
     username: str
+    userType: Role
     access_token: str
     token_type: str
 

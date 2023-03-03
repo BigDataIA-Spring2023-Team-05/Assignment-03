@@ -12,5 +12,5 @@ class UserDashboardResponse(BaseModel):
     total_failed_api_hits_in_hr: int = Field(
         default= 0
     )
-
+    api_key:str = Field(default=None)
 
