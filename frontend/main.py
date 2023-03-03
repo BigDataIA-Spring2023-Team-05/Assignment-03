@@ -2,8 +2,8 @@ import streamlit as st
 import datetime
 import re
 from datetime import date
-from backend.awscloud.s3 import main as s3
-from backend.awscloud.s3 import nexrad_main as nexs3
+from localhost.awscloud.s3 import main as s3
+from localhost.awscloud.s3 import nexrad_main as nexs3
 # from utils.logger import Log
 
 ## Library Imports
