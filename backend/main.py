@@ -5,6 +5,9 @@ import uvicorn
 from routers import user, goes, nexrad, service_plans, profile
 from config.db import Base, engine, SessionLocal
 from repository import service_plans as servicePlans
+from repository import user as UserRepository
+from schemas.user import User
+from pydantic import BaseModel, Field, EmailStr, validator
 
 app =  FastAPI()
 db = SessionLocal()
@@ -14,6 +17,8 @@ def init_db():
     servicePlans.create(1, 'Free', 10, db= db)
     servicePlans.create(2, 'Gold', 15, db= db)
     servicePlans.create(3, 'Platinum', 20, db= db)
+    UserRepository.create(User(username='damg7245', email=EmailStr('rishab1300@gmail.com'), password='spring2023', planId=2), db= db)
+    UserRepository.create(User(username='admin', email=EmailStr('mail@heyitsrj.com'), password='spring2023', planId=1), db= db)
 
     print("Initialized the db")
 
