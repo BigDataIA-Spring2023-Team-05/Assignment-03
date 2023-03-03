@@ -9,8 +9,13 @@ class User(BaseModel):
         min_length=5,
     )
     email:EmailStr
-    password:str
-    planId: int
+    password:str = Field(
+        min_length=8
+    )
+    planId: int = Field(
+        default=1,
+        title="Please enter the plan ID (Free - 1, Gold - 2, Platinum - 3)"
+        )
 
     @validator("username", "email", pre=True)
     def lowercase_strings(cls, value):
@@ -38,3 +43,19 @@ class LoginResponse(BaseModel):
     username: str
     access_token: str
     token_type: str
+
+class ForgotPassword(BaseModel):
+    email:EmailStr
+
+class VerifyForgotPassword(BaseModel):
+    email:EmailStr
+    otp:int
+
+class PasswordResetRequest(BaseModel):
+    email:EmailStr
+    new_password:str = Field(
+        min_length=8
+    )
+    confirm_password:str = Field(
+        min_length=8
+    )

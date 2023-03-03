@@ -19,7 +19,7 @@ router = APIRouter(
 get_db = db.get_db
 
 @router.get('/files')
-def get_all_goes_file(station: str, year: str, day: str, hour: str, response: Response, get_current_user: User = Depends(get_current_user)):
+def get_all_goes_file(station: str, year: str, day: str, hour: str, response: Response, get_current_user: TokenData = Depends(get_current_user)):
     # Code to retrieve from filename form SQL Lite DB.
     result = aws.get_all_geos_file_name_by_filter(station=station, year=year, day=day, hour=hour)
 

@@ -12,3 +12,12 @@ def islimiter(key, limit):
         return False
     else:
         return True
+    
+
+def register_otp(user_email, otp):
+    client.set(user_email, str(otp), ex= 300)
+
+def verify_otp(user_email):
+    data = client.get(user_email)
+
+    return data.decode('utf-8')

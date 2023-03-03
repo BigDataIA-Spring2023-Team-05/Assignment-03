@@ -30,7 +30,7 @@ class Email:
                 </br></br></br>
                 <strong>{otp}</strong>
                 </br></br></br>
-                <p>Enter the secret code above.</p>
+                <p>Enter the secret code above. It will expire in 5 minutes.</p>
                 </br></br>
                 <p>If you did not forget your password, you can ignore this email.</p>
                 </body>
@@ -59,6 +59,3 @@ class Email:
             Source="jain.rishabh2@northeastern.edu",
         )
 
-
-
-Email().send_html_email("amiti.v@northeastern.edu", 937978)

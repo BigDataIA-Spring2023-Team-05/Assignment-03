@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
-from models.index import ServicePlanModel
+from models.index import ServicePlanModel, UserModel
+
 
 def create(plan_id:int, plan_nameame: str, rate_limit:int, db: Session):
     try:
@@ -18,3 +19,10 @@ def get_plans(db: Session):
     plans = db.query(ServicePlanModel).all()
 
     return plans
+
+def get_plan_by_user_id(user_id:int, db: Session):
+
+    user: UserModel = db.query(UserModel).filter(UserModel.id == user_id).join(ServicePlanModel).first()
+
+    return user.plan
+
