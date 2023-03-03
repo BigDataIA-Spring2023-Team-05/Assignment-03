@@ -81,6 +81,8 @@ REDIST_HOST=localhost
 - Analytics in the Streamlit app can be viewee which will allow us to understand the API calls made during a particular date and time for all successful attempts made on the application
 - After your API call limits have exhausted, you can upgrade your subscription from the dashboard
 
+# Architecture diagram
+<img src="Arch_Diag/flow-diag.png">
 
 # A CLI interface at your rescue!
 **Steps - How to Use this feature**
