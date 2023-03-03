@@ -10,6 +10,7 @@ class User(BaseModel):
     )
     email:EmailStr
     password:str
+    planId: int
 
     @validator("username", "email", pre=True)
     def lowercase_strings(cls, value):

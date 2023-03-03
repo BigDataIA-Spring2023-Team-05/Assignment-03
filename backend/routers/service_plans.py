@@ -14,7 +14,7 @@ router = APIRouter(
 
 
 @router.get('/options', status_code=status.HTTP_200_OK, response_model= List[Plan])
-def sign_up_user(db: Session = Depends(db.get_db)):
+def get_service_plans(db: Session = Depends(db.get_db)):
     result = servicePlan.get_plans(db = db)
 
     return result
