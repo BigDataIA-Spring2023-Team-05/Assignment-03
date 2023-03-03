@@ -42,8 +42,8 @@ elif st.session_state['reg_status'] == True and st.session_state['done_status'] 
             st.warning("Passwords do not match")
         elif not agree_to_terms:
             st.warning("Please agree to the terms and conditions")
-        else:
-            st.success("Registration successful!")
+        # else:
+        #     st.success("Registration successful!")
 
 
 
@@ -60,16 +60,7 @@ elif st.session_state['reg_status'] == True and st.session_state['done_status'] 
 
 
     with column_2:
-        # col1, col2, col3 = st.columns([1,6,1])
-
-        # with col1:
-        #     st.write(" ")
-
-        # with col2:
-        #     st.image("https://www.sicklecelldisease.org/wp-content/uploads/2019/01/Silver-Membership.png",width=150,output_format="auto")
-
-        # with col3:
-        #     st.write(" ")
+        
 
         st.image("https://www.sicklecelldisease.org/wp-content/uploads/2019/01/Silver-Membership.png",width=200,output_format="auto")
         #image address(https://www.sicklecelldisease.org/wp-content/uploads/2019/01/Silver-Membership.png)
@@ -93,6 +84,6 @@ elif st.session_state['reg_status'] == True and st.session_state['done_status'] 
     with col3:
         st.write(" ")
 
-if st.session_state['done_status'] == True:
+elif st.session_state['reg_status'] == True and st.session_state['done_status'] == True:
          st.success("Registration successful")
 
