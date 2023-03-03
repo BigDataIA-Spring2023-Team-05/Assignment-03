@@ -12,5 +12,4 @@ team5.egg-info
 .env
 venv
 venv_varsha
-db_data
-logs
+data_as_service/airflow/logs

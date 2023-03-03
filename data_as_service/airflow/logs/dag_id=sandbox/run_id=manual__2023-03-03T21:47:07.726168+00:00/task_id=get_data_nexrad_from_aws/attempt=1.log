@@ -1,2 +1,0 @@
-[2023-03-03T21:47:12.167+0000] {taskinstance.py:1073} INFO - Dependencies not met for <TaskInstance: sandbox.get_data_nexrad_from_aws manual__2023-03-03T21:47:07.726168+00:00 [queued]>, dependency 'Trigger Rule' FAILED: Task's trigger rule 'all_success' requires all upstream tasks to have succeeded, but found 1 non-success(es). upstream_states=_UpstreamTIStates(success=0, skipped=0, failed=0, upstream_failed=0, removed=0, done=0), upstream_task_ids={'get_data_goes_from_aws'}
-[2023-03-03T21:47:12.170+0000] {local_task_job.py:147} INFO - Task is not able to be run
