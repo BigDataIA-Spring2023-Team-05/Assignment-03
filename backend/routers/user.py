@@ -20,6 +20,9 @@ get_db = db.get_db
 
 @router.post('/sign-up', status_code=status.HTTP_201_CREATED, response_model= UserResponse)
 def sign_up_user(request: User, db: Session = Depends(get_db)):
+
+    if request.planId not in [1, 2, 3]:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Please sepcify plan id")
     
     result = user.create(request = request, db = db)
 

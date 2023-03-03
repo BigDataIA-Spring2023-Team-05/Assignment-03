@@ -103,3 +103,14 @@ def get_nexrad_aws_link_by_filename(filename):
     Log().i(f'GOES Bucket link: {output}')
 
     return output
+
+
+def get_our_aws_link_by_filename(filename: str):
+    y = filename.split('_')[0]
+    # print(y)
+    station_id = y[:4]
+    year = y[4:8]
+    month = y[8:10]
+    date = y[10:12]
+
+    return get_nexrad_aws_link(year= year, month= month, day= date, station_id= station_id, filename= filename)
