@@ -26,7 +26,7 @@ def nexrad_map():
     token = st.session_state["authentication_status"]
     headers = {'Authorization': f'Bearer {token}'}
     # payload = {'stationId':str(station),'day': day_nexrad,'year':year_nexrad,'month':month_nexrad}
-    result = requests.get("http://backend:8000/nexrad/map-data", headers=headers).json()
+    result = requests.get("http://localhost:8000/nexrad/map-data", headers=headers).json()
     df = pd.DataFrame(data = result)
     # print(df)
     st.write(df)
