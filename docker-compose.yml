@@ -27,12 +27,12 @@ services:
       - dbsql
       - redis-server
 
-  frontend:
-    build: ./frontend
-    ports:
-      - 8501:8501
-    depends_on:
-      - backend
+  # frontend:
+  #   build: ./frontend
+  #   ports:
+  #     - 8501:8501
+  #   depends_on:
+  #     - backend
 
 volumes:
   assignemnt-03:
