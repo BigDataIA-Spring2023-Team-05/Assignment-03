@@ -32,8 +32,8 @@ def get_all_nexrad_file_name_by_filter_new(year, month, date):
     # write_nexrad_log(f"User requested the files for, Year: {year}, Month: {month}, Day: {day},  Station: {station}")
     files_available = []
  
-    month = '{:02d}'.format(int(month))
-    date = '{:02d}'.format(int(date))
+    # month = '{:02d}'.format(int(month))
+    # date = '{:02d}'.format(int(date))
 
     for object_summary in src_bucket_noaa.objects.filter(Prefix=f'{year}/{month}/{date}/'): #/{month}/{day}/{station}
         files_available.append(object_summary.key.split('/')[-1])
@@ -44,16 +44,22 @@ def get_all_nexrad_file_name_by_filter_new(year, month, date):
     return files_available
 
 # %%
-def get_all_geos_file_name_by_filter_new(station, year, day, hour):
+def get_all_geos_file_name_by_filter_new(station, year):
     # Log().i(f"User requested the files for, Station: {station}, Year: {year}, Day: {day}, Hour: {hour}")
     # write_goes_log(f"User requested the files for, Station: {station}, Year: {year}, Day: {day}, Hour: {hour}")
     files_available=[]
-    print('here')
+    print('********************** get_all_geos_file_name_by_filter_newm ****************')
 
-    day = '{:03d}'.format(int(day))
-    hour = '{:02d}'.format(int(hour))
-    
-    for object_summary in src_bucket_goes.objects.filter(Prefix=  f'{station}/{year}'): #/{day}/{hour}/
+    # day = '{:03d}'.format(int(day))
+    # hour = '{:02d}'.format(int(hour))
+
+    # if metadata_instance.check_database_is_null():
+    #     for object_summary in src_bucket_goes.objects.filter(Prefix=  f'{station}/{year}'): #/{year}/{day}/{hour}/
+    #         file_name = object_summary.key.split('/')[-1]
+    #         files_available.append(file_name)
+    #         print(file_name)
+    # else:
+    for object_summary in src_bucket_goes.objects.filter(Prefix=  f'{station}/{year}/'):
         file_name = object_summary.key.split('/')[-1]
         files_available.append(file_name)
         print(file_name)
@@ -70,7 +76,7 @@ def get_all_geos_file_name_by_filter_new(station, year, day, hour):
 class Metadata:
 
     def __init__(self):
-        self.database_name = './backend/awscloud/s3/metadata_storage.db'
+        self.database_name = 'metadata_storage.db'
         self.table_name_goes = 'goes_metadata'
         # self.table_name_nexrad = 'nexrad_metadata'
 
@@ -81,11 +87,19 @@ class Metadata:
         # self.create_table_goes()
         # self.create_table_nexrad()
 
-    def truncate_table_data(self):
-        str_table_1_drop = "DELETE FROM "+self.table_name_goes
-        str_table_2_drop = "DELETE FROM "+self.table_name_nexrad
-        self.cursor.execute(str_table_1_drop)
-        self.cursor.execute(str_table_2_drop)
+    # def truncate_table_data(self):
+    #     str_table_1_drop = "DELETE FROM "+self.table_name_goes
+    #     str_table_2_drop = "DELETE FROM "+self.table_name_nexrad
+    #     self.cursor.execute(str_table_1_drop)
+    #     self.cursor.execute(str_table_2_drop)
+
+    def check_database_is_null(self):
+        count_str = "SELECT count(*) FROM "+self.table_name_goes;
+        self.cursor.execute(count_str)
+        count = self.cursor.fetchall()
+        if int(count[0]) == 0:
+            return True
+        return False
 
     def create_table_goes(self):
         # create sql lite 3 database
@@ -192,27 +206,28 @@ def aws_extract_data_to_sqlite():
     # goes_files_available_list = s3_package.get_all_geos_file_name_by_filter_new(station_goes, year, day_of_year, hour)
     print('todays', date, month, year, hour, day_of_year)
     # print('Queried', year, day_of_year, hour)
-    goes_files_available_list = get_all_geos_file_name_by_filter_new(station_goes, year, day_of_year, hour)
+    goes_files_available_list = get_all_geos_file_name_by_filter_new(station_goes, year)
 
     try:
         for filename in goes_files_available_list:
             if filename != "" and filename!=None:
+                print(filename)
                 # metadata_instance.insert_data_into_goes(station_goes, year, day_of_year, hour, filename)
-                metadata_instance.insert_data_into_goes(station_goes, year, day_of_year,hour, filename)
+                # metadata_instance.insert_data_into_goes(station_goes, year, day_of_year,hour, filename)
     except TypeError:
         print("Got NONE TYPE ***GOES*** ")
 
-    metadata_instance.print_and_validate_data_goes()
+    # metadata_instance.print_and_validate_data_goes()
 
     # NEXRAD station
     # metadata_instance.delete_table_nexrad()
 
-    # metadata_instance.create_table_nexrad()
+    # ---- # metadata_instance.create_table_nexrad()
 
-    # # noaa_filenames_available_list = s3_package_nex.get_all_nexrad_file_name_by_filter(year, month, date)
-    # noaa_filenames_available_list = get_all_nexrad_file_name_by_filter_new(year, month, date)
+    # noaa_filenames_available_list = s3_package_nex.get_all_nexrad_file_name_by_filter(year, month, date)
+    # ---- # noaa_filenames_available_list = get_all_nexrad_file_name_by_filter_new(year, month, date)
 
-    # metadata_instance.truncate_data_from_nexrad_table()
+    # ---- # metadata_instance.truncate_data_from_nexrad_table()
 
     # try:
     #     for filename in noaa_filenames_available_list:
@@ -223,27 +238,26 @@ def aws_extract_data_to_sqlite():
     #             metadata_instance.insert_data_into_nexrad(year, month, date, station_id, filename)
     # except TypeError:
     #     print("Got NONE TYPE ***NEXRAD*** ")
-        
+        # ---- # 
 
     # metadata_instance.print_and_validate_data_nexrad()
 
 
-def populate_database():
+def create_csv_files():
 
     conn, cursor = metadata_instance.conn_cursor_function()
     goes_table_name = metadata_instance.get_goes_table_name()
-
     df1 = pd.read_sql_query("SELECT * FROM "+ goes_table_name, conn )
 
     # nexrad_table_name = metadata_instance.get_nexrad_table_name()
     # df2 = pd.read_sql_query("SELECT * FROM "+ nexrad_table_name, conn )
 
-    df1.to_csv('GOES_1.csv',index=False)
-    # df2.to_csv('NEXRAD_1.csv',index=False)
+    df1.to_csv('GOES.csv',index=False)
+    # df2.to_csv('NEXRAD.csv',index=False)
 
     metadata_instance.db_conn_close()
 
 # %%
 aws_extract_data_to_sqlite()
 # %%
-populate_database()
+create_csv_files()

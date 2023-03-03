@@ -2,7 +2,7 @@ FROM python:3.9
 
 # Pull the base docker image of python with tag 3.9.6
 
-WORKDIR /Assignment-01
+WORKDIR /Assignment-03
 # Change the working dir inside the container - cd /app (as workdir is inside container)
 
 COPY ./ ./
@@ -11,6 +11,7 @@ COPY ./ ./
 RUN python3 -m pip install --upgrade pip
 RUN pip3 install --no-cache-dir -r requirements.txt
 RUN pip3 install -e .
+RUN pip3 install --upgrade setuptools
 
 EXPOSE 8080
 CMD ["streamlit", "run", "ui/main.py", "--server.port", "8080"]

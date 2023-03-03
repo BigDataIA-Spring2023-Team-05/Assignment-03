@@ -6,9 +6,9 @@ import botocore
 from dotenv import load_dotenv
 import re
 # from data.sql_aws_metadata import Metadata
-from awscloud.cloudwatch.logger import write_nexrad_log
-from utils.logger import Log
-from utils import status_checker as status_check
+from backend.awscloud.cloudwatch.logger import write_nexrad_log
+from backend.utils.logger import Log
+from backend.utils import status_checker as status_check
 
 # %%
 load_dotenv()
@@ -103,3 +103,34 @@ def get_nexrad_aws_link_by_filename(filename):
     Log().i(f'GOES Bucket link: {output}')
 
     return output
+
+# %%
+def get_all_nexrad_file_name_by_filter_new(year):
+    
+    Log().i(f"User requesting the files for, Station: Year: {year}")
+
+    write_nexrad_log(f"User requested the files for, Year: {year}")
+    files_available = []
+
+    for object_summary in src_bucket.objects.filter(Prefix=f'{year}/'):
+        files_available.append(object_summary.key.split('/')[-1])
+
+    write_nexrad_log(f"File fetched: \n{files_available}")
+
+    return files_available
+
+def get_nexrad_aws_details_by_filename(filename):
+    # write_nexrad_log(f"User requested  file: {filename}")
+    y = filename.split('_')[0]
+    print(y)
+    station = y[0:4]
+    year = y[4:8]
+    date = y[8:10]
+    hour = y[10:12]
+
+    return station,year, date, hour
+
+filename = "KJGX19700101_000000_V06"
+
+station, year, date, hour = get_nexrad_aws_details_by_filename(filename)
+print(station, year, date, hour)

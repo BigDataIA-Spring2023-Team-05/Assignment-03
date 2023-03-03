@@ -1,0 +1,25 @@
+[2023-03-03T22:05:56.284+0000] {taskinstance.py:1083} INFO - Dependencies all met for <TaskInstance: sandbox.create_csv_from_db manual__2023-03-03T22:05:33.983603+00:00 [queued]>
+[2023-03-03T22:05:56.291+0000] {taskinstance.py:1083} INFO - Dependencies all met for <TaskInstance: sandbox.create_csv_from_db manual__2023-03-03T22:05:33.983603+00:00 [queued]>
+[2023-03-03T22:05:56.292+0000] {taskinstance.py:1279} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-03T22:05:56.292+0000] {taskinstance.py:1280} INFO - Starting attempt 1 of 1
+[2023-03-03T22:05:56.293+0000] {taskinstance.py:1281} INFO - 
+--------------------------------------------------------------------------------
+[2023-03-03T22:05:56.299+0000] {taskinstance.py:1300} INFO - Executing <Task(PythonOperator): create_csv_from_db> on 2023-03-03 22:05:33.983603+00:00
+[2023-03-03T22:05:56.309+0000] {standard_task_runner.py:55} INFO - Started process 12075 to run task
+[2023-03-03T22:05:56.314+0000] {standard_task_runner.py:82} INFO - Running: ['***', 'tasks', 'run', 'sandbox', 'create_csv_from_db', 'manual__2023-03-03T22:05:33.983603+00:00', '--job-id', '35', '--raw', '--subdir', 'DAGS_FOLDER/noaa.py', '--cfg-path', '/tmp/tmp07602nui']
+[2023-03-03T22:05:56.315+0000] {standard_task_runner.py:83} INFO - Job 35: Subtask create_csv_from_db
+[2023-03-03T22:05:56.377+0000] {task_command.py:388} INFO - Running <TaskInstance: sandbox.create_csv_from_db manual__2023-03-03T22:05:33.983603+00:00 [running]> on host a1445a4c94cf
+[2023-03-03T22:05:56.442+0000] {taskinstance.py:1507} INFO - Exporting the following env vars:
+AIRFLOW_CTX_DAG_OWNER=***
+AIRFLOW_CTX_DAG_ID=sandbox
+AIRFLOW_CTX_TASK_ID=create_csv_from_db
+AIRFLOW_CTX_EXECUTION_DATE=2023-03-03T22:05:33.983603+00:00
+AIRFLOW_CTX_TRY_NUMBER=1
+AIRFLOW_CTX_DAG_RUN_ID=manual__2023-03-03T22:05:33.983603+00:00
+[2023-03-03T22:05:56.721+0000] {logging_mixin.py:137} INFO - Data is entered successfully.
+[2023-03-03T22:05:56.723+0000] {logging_mixin.py:137} INFO - The Postgres connection is closed.
+[2023-03-03T22:05:56.727+0000] {python.py:177} INFO - Done. Returned value was: None
+[2023-03-03T22:05:56.745+0000] {taskinstance.py:1318} INFO - Marking task as SUCCESS. dag_id=sandbox, task_id=create_csv_from_db, execution_date=20230303T220533, start_date=20230303T220556, end_date=20230303T220556
+[2023-03-03T22:05:56.806+0000] {local_task_job.py:208} INFO - Task exited with return code 0
+[2023-03-03T22:05:56.832+0000] {taskinstance.py:2578} INFO - 0 downstream tasks scheduled from follow-on schedule check

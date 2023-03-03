@@ -6,9 +6,9 @@ import botocore
 import re
 from dotenv import load_dotenv
 # from data.sql_aws_metadata import Metadata
-from awscloud.cloudwatch.logger import write_goes_log
-from utils.logger import Log
-from utils import status_checker as status_check
+from backend.awscloud.cloudwatch.logger import write_goes_log
+from backend.utils.logger import Log
+from backend.utils import status_checker as status_check
 
 # %%
 load_dotenv()
@@ -113,3 +113,46 @@ def get_aws_link_by_filename(filename):
     Log().i(f'GOES Bucket link: {output}')
 
     return output
+
+
+def get_all_geos_file_name_by_filter_new(station, year):
+    Log().i(f"User requested the files for, Station: {station}, Year: {year}/")
+    write_goes_log(f"User requested the files for, Station: {station}, Year: {year}/")
+    files_available=[]
+    
+    for object_summary in src_bucket.objects.filter(Prefix=  f'{station}/{year}/'):
+        file_name = object_summary.key.split('/')[-1]
+        files_available.append(file_name)
+
+    Log().i(str(files_available))
+    write_goes_log(f"File fetched: \n{files_available}") 
+
+    return files_available
+
+
+def get_aws_details_by_filename(filename):
+    # Log().i(f"User requested  file: {filename}")
+    # write_goes_log(f"User requested  file: {filename}")
+
+    y = filename.split('_')
+    # print(y)
+    filename_pattern = r'(.*)-(.*)'
+    regex_pattern = re.compile(filename_pattern)
+    res_fn = regex_pattern.findall(y[1])
+    res = str(res_fn[0][0])
+    end = res[-1]
+    if end.isnumeric():
+        res = res[:-1]
+            # print(res)
+            # get timestamp
+    time = y[3]
+    year = time[1:5]
+    day = time[5:8]
+    hour = time[8:10]
+
+    return time, year, day, hour
+
+filename = "OR_ABI-L1b-RadC-M6C06_G18_s20230021256172_e20230021258553_c20230021258599.nc"
+time, year, day, date = get_aws_details_by_filename(filename)
+
+print(time, year, day, date)
