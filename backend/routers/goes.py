@@ -7,7 +7,6 @@ from config import db
 from middleware.requests_logs import TimedRoute
 from fastapi.responses import JSONResponse
 from schemas.index import GOESAWSFileResponse, UserPlan
-from utils.redis import islimiter
 from repository.requests_logs import get_user_specific_api_rate_limit
 from sqlalchemy.orm import Session
 
@@ -19,31 +18,45 @@ router = APIRouter(
 get_db = db.get_db
 
 @router.get('/files')
-def get_all_goes_file(station: str, year: str, day: str, hour: str, response: Response, get_current_user: TokenData = Depends(get_current_user)):
+def get_all_goes_file(station: str, year: str, day: str, hour: str, response: Response, get_current_user: TokenData = Depends(get_current_user), is_limit: bool = Depends(get_user_specific_api_rate_limit)):
     # Code to retrieve from filename form SQL Lite DB.
-    result = aws.get_all_geos_file_name_by_filter(station=station, year=year, day=day, hour=hour)
+    if is_limit is True:
+        result = aws.get_all_geos_file_name_by_filter(station=station, year=year, day=day, hour=hour)
 
-    return {
-        'success':True,
-        'all_files': result
-    }
+        return {
+            'success':True,
+            'all_files': result
+        }
+    else:
+        return JSONResponse(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                content={
+                    'success': False, 
+                    "message": "API limit excceded!"
+                }
+            )
 
-@router.post('/generate/aws-link', status_code=status.HTTP_201_CREATED)
-def generate_aws_link(request: GOES, get_current_user: TokenData = Depends(get_current_user)):
-    
-    result = aws.get_geos_aws_link(request.station, request.year, request.day, request.hour, request.file_name)
-    
-    if(result == None):
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Requested file does not exists!")
+@router.post('/generate/source-aws-link', status_code=status.HTTP_201_CREATED)
+def generate_aws_link(request: GOES, get_current_user: TokenData = Depends(get_current_user), is_limit: bool = Depends(get_user_specific_api_rate_limit)):
+    if is_limit is True:
+        result = aws.get_aws_link_by_filename(request.file_name)
+        
+        if(result == None):
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Requested file does not exists!")
 
-    team_link, goes_link = result
-
-    return {
-        'success':True,
-        'message':'link generated',
-        'team_link':team_link,
-        'goes_link':goes_link
-    }
+        return {
+            'success':True,
+            'message':'link generated',
+            'goes_link':result
+        }
+    else:
+        return JSONResponse(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                content={
+                    'success': False, 
+                    "message": "API limit excceded!"
+                }
+            )
 
 
 @router.post('/generate/aws-link-by-filename/{filename}', 
@@ -68,7 +81,7 @@ def generate_aws_link_by_filename(filename, request: Request, get_current_user: 
                 }
             )
         
-        result = aws.get_aws_link_by_filename(filename=filename)
+        result = aws.get_our_aws_link_by_filename(filename= filename)
 
         if(result == None):
             return JSONResponse(
@@ -79,7 +92,7 @@ def generate_aws_link_by_filename(filename, request: Request, get_current_user: 
                 }
             )
         
-        return GOESAWSFileResponse(success = True, message= 'original bucket link', bucket_link= result)
+        return GOESAWSFileResponse(success = True, message= 'original bucket link', our_bucket_link= result[0], source_bucket_link= result[1])
     else:
         return JSONResponse(
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,

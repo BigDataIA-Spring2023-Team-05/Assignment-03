@@ -3,6 +3,7 @@ from . service_plan import Plan
 
 class UserDashboardResponse(BaseModel):
     plan: Plan
+    username:str
     total_api_hits_in_hr: int = Field(
         default=0
     )
